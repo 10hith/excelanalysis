@@ -1,0 +1,52 @@
+<HTML><HEAD>
+<TITLE></TITLE>
+</HEAD>
+<TABLE width="100%" bgcolor="white">
+<TR><TD>
+<img src="http://fm-eu-lon-pac.fm.rbsgrp.net:8080/images/NWG_horizontal_logo.jpg">
+</TABLE>
+<FONT face="Helvetica">
+<big><strong></strong></big><BR>
+</FONT>
+<blockquote>
+<TABLE border=0 cellPadding=1 width="80%">
+<TR><TD>
+<FONT face="Helvetica">
+<BR>
+</FONT>
+</TD></TR>
+<TR><TD>
+<FONT face="Helvetica">
+<p><b>Website Access Denied</b></p>
+<p>Access to the Website <font color='red'>files.pythonhosted.org</font> has been blocked under Group Policy category: <font color = 'red'>Software Downloads (Bluecoat)</font></p>
+<p>To gain access to the website (for business purposes) a website access request will need to be submitted on your behalf (either by your line manager or an authorised person) by using the following <font color='red'> <a href='http://slx.web.rbsgrp.net/Content/LanAdmin/Forms/Network/Form_RestrictedWebsiteAccess.aspx?restricted=true'target='_blank'>SLX form</a></font></p>
+<p>If you are a RBS Invoice Finance user, to request access to a blocked URL, please raise a Service Portal request via the following <font color='red'> <a href="https://servicedesk.rbsif.net/ServiceDesk.WebAccess" target='_blank'>link</a></font></p>
+<p>You will need to give the requester the following details:</p>
+<p>Website (URL): <font color = 'red'>files.pythonhosted.org</font><br>
+Category name: <font color = 'red'>Software Downloads (Bluecoat)</font><br>
+Number of days access is required</p>
+<p>As a reminder, please use the bank's email and internet facilities responsibly (to reduce the risk of security events) – for more information please click on the following link: <a href='https://intranet.rbsres01.net/Security/SecurityGuidance/Bank-wideguidanceforallstaff/Technology/UseTheBanksInternetAndEmailSecurely/Beinternetsmart/Pages/default.aspx'target='_blank'> Use the bank's internet and email securely.</a></p>
+<p>NOTE: If you feel that the website has been blocked in error then please go to the above request form, select your department (from the “Authoriser details” section) and contact one of the listed authorisers (in the “Authorisers name” drop down list) to discuss.</p>
+<p>Technical support details:<br>
+Proxy IP: <font color='red'> 11.131.157.167</font><br>
+Proxy Hostname:<font color='red'> GBEDXWEBPX01B</font><br>
+User ID: <font color='red'>basal</font><br>
+User IP: <font color='red'></font></p>
+        
+</FONT>
+</TD></TR>
+<TR><TD>
+<FONT face="Helvetica">
+
+</FONT>
+</TD></TR>
+<TR><TD>
+<FONT face="Helvetica" SIZE=2>
+<BR>
+For further help and support, you can speak to the Workplace Service Centre using Ask Archie, just click <a href='https://intranet.rbsres01.net/sites/ihelp/Pages/AskArchie/AskArchieGeneralInfo.aspx?pn=Ask_Archie_-_General_Information'target='here'>here</a>
+</FONT>
+</TD></TR>
+</TABLE>
+</blockquote>
+</FONT>
+</BODY></HTML>

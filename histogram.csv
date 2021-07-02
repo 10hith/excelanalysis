@@ -1,0 +1,776 @@
+column_name,cat_value,count,ratio
+fca_category,Basic Essential Expenditure,1.73859199E8,34.68
+fca_category,Discretionary Spending,1.52873845E8,30.49
+fca_category,Other Income,8.3664528E7,16.69
+fca_category,Committed Expenditure,2.526777E7,5.04
+fca_category,Regular Income,2.0842301E7,4.16
+fca_category,Basic Quality of Living,2.0815877E7,4.15
+fca_category,Unknown,1.7649501E7,3.52
+fca_category,NullValue,5097028.0,1.02
+fca_category,Salary,800252.0,0.16
+fca_category,Loan Income,412115.0,0.08
+fca_category,Pension,47586.0,0.01
+tier_1,Finance,1.12374141E8,22.42
+tier_1,Income,1.06386107E8,21.22
+tier_1,Shopping,7.2085709E7,14.38
+tier_1,Groceries,6.7147824E7,13.39
+tier_1,General,3.2377364E7,6.46
+tier_1,Bills,2.9528249E7,5.89
+tier_1,Entertainment,1.8670076E7,3.72
+tier_1,Eating Out,1.7060007E7,3.4
+tier_1,Transport,1.6024537E7,3.2
+tier_1,Services,1.1433126E7,2.28
+tier_1,Other,6447667.0,1.29
+tier_1,NullValue,5097013.0,1.02
+tier_1,Healthcare,4444918.0,0.89
+tier_1,Automotive,1302832.0,0.26
+tier_1,Travel,601521.0,0.12
+tier_1,Personal Care,341961.0,0.07
+tier_1,BIlls,6950.0,0.0
+tier_2,Supermarkets,6.0121413E7,11.99
+tier_2,Transfer/Payment,5.0220531E7,10.02
+tier_2,Other Income,4.5868778E7,9.15
+tier_2,"",2.8829731E7,5.75
+tier_2,PSP Uncategorised,2.5589354E7,5.1
+tier_2,Finance,2.4434194E7,4.87
+tier_2,Transfer,1.5380305E7,3.07
+tier_2,Gambling,1.4527814E7,2.9
+tier_2,Cash,1.118913E7,2.23
+tier_2,Insurance,1.0994233E7,2.19
+tier_2,Fast Food Restaurants,1.0216263E7,2.04
+tier_2,Salary,9846052.0,1.96
+tier_2,Service Stations,9479650.0,1.89
+tier_2,Utilities,7946790.0,1.59
+tier_2,Mobile Phone,7156702.0,1.43
+tier_2,Benefits,6814892.0,1.36
+tier_2,Electronics Stores,6788829.0,1.35
+tier_2,Credit Cards,6459950.0,1.29
+tier_2,Payment,6447667.0,1.29
+tier_2,Membership,6222234.0,1.24
+tier_2,Refund,6115863.0,1.22
+tier_2,Miscellaneous Specialty Retail,5738372.0,1.14
+tier_2,Convenience Stores/ Misc Food Stores /Vending Machines,5655181.0,1.13
+tier_2,NullValue,5097013.0,1.02
+tier_2,Broadband & Media,4802015.0,0.96
+tier_2,Restaurants,4620802.0,0.92
+tier_2,Fee/Charges,4370492.0,0.87
+tier_2,Clothing,4061562.0,0.81
+tier_2,Pension,3910603.0,0.78
+tier_2,Financing,3605448.0,0.72
+tier_2,Credit Card Balance Payment,3502359.0,0.7
+tier_2,Council,3407427.0,0.68
+tier_2,Government Services,3262655.0,0.65
+tier_2,Drug Stores and Pharmacies,3216255.0,0.64
+tier_2,Miscellaneous Business Services,2730059.0,0.54
+tier_2,Digital Goods: Games,2629815.0,0.52
+tier_2,Charity,2521999.0,0.5
+tier_2,Cable  Satellite  and Other Paid Media Services,2443344.0,0.49
+tier_2,Hardware Stores,2209059.0,0.44
+tier_2,Payment/Merchant Clearance,2205490.0,0.44
+tier_2,TV Licence,2199294.0,0.44
+tier_2,Digital Goods: Media  Books  Movies  Music,2133603.0,0.43
+tier_2,Lumber  Building Materials Stores,2045848.0,0.41
+tier_2,Discount Stores,2017322.0,0.4
+tier_2,Loan,1846384.0,0.37
+tier_2,Postal Services,1828667.0,0.36
+tier_2,Department Stores,1803029.0,0.36
+tier_2,Computer Software Stores,1777598.0,0.35
+tier_2,Coffee Shop,1687950.0,0.34
+tier_2,Automated Fuel Dispensers,1652783.0,0.33
+tier_2,Mortgage,1637027.0,0.33
+tier_2,Savings,1635172.0,0.33
+tier_2,Commuter Transport  Ferries,1291455.0,0.26
+tier_2,Rent,1248774.0,0.25
+tier_2,Investments,1198037.0,0.24
+tier_2,Direct Marketing - Catalog Merchant,1077010.0,0.21
+tier_2,Parking Lots  Garages,1059225.0,0.21
+tier_2,Limousines & Taxicabs,1042098.0,0.21
+tier_2,Professional,981076.0,0.2
+tier_2,Liquor Store,980278.0,0.2
+tier_2,Pet Shops,959900.0,0.19
+tier_2,Debt Collection,906303.0,0.18
+tier_2,Household Appliance Stores,879141.0,0.18
+tier_2,News Dealers and Newsstands,873331.0,0.17
+tier_2,Tax Payments,858017.0,0.17
+tier_2,Withdraw,795463.0,0.16
+tier_2,Telecommunication Services,750645.0,0.15
+tier_2,Financial Institutions,682255.0,0.14
+tier_2,Electrical Parts and Equipment,618565.0,0.12
+tier_2,Miscellaneous Stores,584814.0,0.12
+tier_2,Accessories,583716.0,0.12
+tier_2,Music Stores,576580.0,0.12
+tier_2,Sporting Goods Stores,568167.0,0.11
+tier_2,Railway,557498.0,0.11
+tier_2,Cosmetic Stores,535805.0,0.11
+tier_2,Caterers,534992.0,0.11
+tier_2,Bakeries,534733.0,0.11
+tier_2,Bus Lines,521739.0,0.1
+tier_2,Dairy Stores,502907.0,0.1
+tier_2,Professional Services,463030.0,0.09
+tier_2,Vending Machine,461208.0,0.09
+tier_2,Drapery  Window Covering  and Upholstery Stores,424111.0,0.08
+tier_2,Furniture Stores,418706.0,0.08
+tier_2,Toy Stores,379074.0,0.08
+tier_2,Reward Schemas,368642.0,0.07
+tier_2,PET,348534.0,0.07
+tier_2,Garden Supply Stores,340895.0,0.07
+tier_2,Gift,333835.0,0.07
+tier_2,Frozen Food Stores,333590.0,0.07
+tier_2,Services,327216.0,0.07
+tier_2,FX & Money Orders,325023.0,0.06
+tier_2,Gift  Card  Novelty  and Souvenir Shops,321199.0,0.06
+tier_2,Education,314501.0,0.06
+tier_2,Auto Service Shops,303578.0,0.06
+tier_2,Confectionery Stores,295189.0,0.06
+tier_2,Bicycle Shops,294568.0,0.06
+tier_2,Dentists,284654.0,0.06
+tier_2,Home Supply Warehouse Stores,282880.0,0.06
+tier_2,Tolls/Bridge Fees,270515.0,0.05
+tier_2,Florists & Nurseries,263769.0,0.05
+tier_2,Video Game Arcades,247191.0,0.05
+tier_2,Student Loan,238760.0,0.05
+tier_2,Automotive Parts and Accessories Stores,235218.0,0.05
+tier_2,AIRLINES,217194.0,0.04
+tier_2,Eyeglass Stores,214267.0,0.04
+tier_2,Photo Developing,212846.0,0.04
+tier_2,Computers  Peripherals  and Software,202900.0,0.04
+tier_2,Dividends,187927.0,0.04
+tier_2,Computer Programming,186836.0,0.04
+tier_2,Marketplaces,180447.0,0.04
+tier_2,Book Stores,173853.0,0.03
+tier_2,Artist's Supply and Craft Shops,173626.0,0.03
+tier_2,Drinking Places,167106.0,0.03
+tier_2,Miscellaneous General Services,163092.0,0.03
+tier_2,Direct Marketing - Other,161411.0,0.03
+tier_2,Jewelery and watch,157216.0,0.03
+tier_2,Visual & Prepaid Cards,154623.0,0.03
+tier_2,Hotels  Motels  Resorts  Central Reservation Services,154179.0,0.03
+tier_2,Utilities & Council Tax,150745.0,0.03
+tier_2,Car and Truck Dealers,142542.0,0.03
+tier_2,Debt,141446.0,0.03
+tier_2,Motor Freight Carriers  Trucking,131533.0,0.03
+tier_2,Fuel Dealers (Non Automotive),124440.0,0.02
+tier_2,Advertising Services,124276.0,0.02
+tier_2,Travel Agencies  Tour Operators,121663.0,0.02
+tier_2,Computer Network Services,120079.0,0.02
+tier_2,Courier Services,118508.0,0.02
+tier_2,Consulting  Public Relations,116305.0,0.02
+tier_2,Interest,113972.0,0.02
+tier_2,Buying/Shopping Services,110502.0,0.02
+tier_2,Office supplies,109929.0,0.02
+tier_2,Miscellaneous Publishing and Printing Services,107755.0,0.02
+tier_2,Barber and Beauty Shops,106454.0,0.02
+tier_2,Medical Services and Health Practitioners (Not Elsewhere Classified),106285.0,0.02
+tier_2,Cigar Stores and Stands,101040.0,0.02
+tier_2,Fuel Prepaid Card,98912.0,0.02
+tier_2,Payday Loan,98903.0,0.02
+tier_2,Expense Reimbursements,94611.0,0.02
+tier_2,Digital Goods: Applications (Excludes Games),94210.0,0.02
+tier_2,Investment,91748.0,0.02
+tier_2,Wires  Money Orders,86437.0,0.02
+tier_2,Direct Marketing - Inbound Tele,82848.0,0.02
+tier_2,Floor Covering Stores,80104.0,0.02
+tier_2,Automotive,76870.0,0.02
+tier_2,Hospitals,74570.0,0.01
+tier_2,Chemicals and Allied Products,74328.0,0.01
+tier_2,Books  Periodicals  and Newspapers,70213.0,0.01
+tier_2,Transportation Services,69962.0,0.01
+tier_2,Miscellaneous Recreation Services,69354.0,0.01
+tier_2,Durable Goods,66371.0,0.01
+tier_2,Hardware  Equipment  and Supplies,66306.0,0.01
+tier_2,Automotive Tire Stores,63811.0,0.01
+tier_2,Antique Shops,62998.0,0.01
+tier_2,Hotels and accomodation,62310.0,0.01
+tier_2,Picture/Video Production,61797.0,0.01
+tier_2,Glass  Paint  and Wallpaper Stores,61002.0,0.01
+tier_2,Computer Network Services & Subscriptions,59295.0,0.01
+tier_2,Money Transfer & FX,59137.0,0.01
+tier_2,Commercial Equipment,58972.0,0.01
+tier_2,Car Rental Agencies,58043.0,0.01
+tier_2,Telecommunication Equipment and Telephone Sales,56805.0,0.01
+tier_2,Security Services,56655.0,0.01
+tier_2,Theatrical Ticket Agencies,54448.0,0.01
+tier_2,Civic  Social  Fraternal Associations,53581.0,0.01
+tier_2,Shoe Repair/Hat Cleaning,51376.0,0.01
+tier_2,Finnancial Services,50368.0,0.01
+tier_2,Direct Marketing - Combination Catalog and Retail Merchant,49532.0,0.01
+tier_2,Industrial Supplies,48521.0,0.01
+tier_2,Motor Vehicle Supplies and New Parts,47347.0,0.01
+tier_2,Dating/Escort Services,47325.0,0.01
+tier_2,Housing Assosiation,46991.0,0.01
+tier_2,Fines,46126.0,0.01
+tier_2,Photographic Studios,45455.0,0.01
+tier_2,Plumbing  Heating Equipment  and Supplies,42720.0,0.01
+tier_2,Wholesale Clubs,41122.0,0.01
+tier_2,Doctors,40408.0,0.01
+tier_2,Equipment Rental,39580.0,0.01
+tier_2,Pharmacy,39147.0,0.01
+tier_2,Legal Services  Attorneys,38003.0,0.01
+tier_2,Trailer Parks  Campgrounds,37985.0,0.01
+tier_2,Medical and Dental Laboratories,36656.0,0.01
+tier_2,Rent/Letting Fees,35644.0,0.01
+tier_2,Tax Return/Refund,34726.0,0.01
+tier_2,Sewing  Needlework  Fabric  and Piece Goods Stores,34347.0,0.01
+tier_2,Renovations Contractors,32182.0,0.01
+tier_2,Construction Materials,32070.0,0.01
+tier_2,Store Cards,30991.0,0.01
+tier_2,Compensation/Bank Refund/Adjustment,29914.0,0.01
+tier_2,Bussiness Income,29195.0,0.01
+tier_2,Nondurable Goods,28886.0,0.01
+tier_2,Chiropractors,28666.0,0.01
+tier_2,Commercial Photography  Art and Graphics,28280.0,0.01
+tier_2,Musical Instruments Stores,27910.0,0.01
+tier_2,Landscaping Services,27805.0,0.01
+tier_2,Alimony & Child Support,27608.0,0.01
+tier_2,Auto Body Repair Shops,26273.0,0.01
+tier_2,Paints  Varnishes  and Supplies,25543.0,0.01
+tier_2,Art Dealers and Galleries,25363.0,0.01
+tier_2,Heating  Plumbing  A/C,24973.0,0.0
+tier_2,Cleaning and Maintenance,24520.0,0.0
+tier_2,Photographic Equipement,23438.0,0.0
+tier_2,Healthcare Equipment and Supplies,23215.0,0.0
+tier_2,Funeral Services  Crematories,22194.0,0.0
+tier_2,Accounting  Auditing & Bookkeeping Services,20811.0,0.0
+tier_2,Health and Beauty Spas,20768.0,0.0
+tier_2,Storage Services,19489.0,0.0
+tier_2,Miscellaneous Auto Dealers,18721.0,0.0
+tier_2,Chiropodists  Podiatrists,18514.0,0.0
+tier_2,Architectural  Engineering and Surveying Services,18121.0,0.0
+tier_2,Tourist Attractions and Exhibits,17595.0,0.0
+tier_2,Petroleum and Petroleum Products,17593.0,0.0
+tier_2,General Contractors,17464.0,0.0
+tier_2,Counseling Services,17174.0,0.0
+tier_2,Bands  Orchestras,16941.0,0.0
+tier_2,Watch/Jewelry Repair Services,16317.0,0.0
+tier_2,Dry Cleaners,14577.0,0.0
+tier_2,Used Merchandise and Secondhand Stores,14173.0,0.0
+tier_2,Agricultural Cooperative,13365.0,0.0
+tier_2,Osteopaths,13272.0,0.0
+tier_2,Motorcycle Shops and Dealers,12663.0,0.0
+tier_2,Car Washes,12095.0,0.0
+tier_2,Bursary,12037.0,0.0
+tier_2,Golf Courses - Public,9970.0,0.0
+tier_2,Computer Repair,9944.0,0.0
+tier_2,Information Retrieval Services,9087.0,0.0
+tier_2,Appliance Repair Services,9074.0,0.0
+tier_2,Laundry  Cleaning Services,8978.0,0.0
+tier_2,Organisations  Religous,8948.0,0.0
+tier_2,Charge Back,8863.0,0.0
+tier_2,Specialty Cleaning Services,8848.0,0.0
+tier_2,Duty Free Stores,8441.0,0.0
+tier_2,Fireplace  Fireplace Screens  and Accessories Stores,8292.0,0.0
+tier_2,Activities and Event management,8207.0,0.0
+tier_2,Rent & Maintenance,7964.0,0.0
+tier_2,Tire Retreading and Repair,7937.0,0.0
+tier_2,Recruitment,7670.0,0.0
+tier_2,Sports Clubs/Fields,7613.0,0.0
+tier_2,Marinas  Service and Supplies,7422.0,0.0
+tier_2,Child Support,6992.0,0.0
+tier_2,Employment/Temp Agencies,6574.0,0.0
+tier_2,Organisations  Political,6556.0,0.0
+tier_2,Amusement Parks/Carnivals,6292.0,0.0
+tier_2,Stamp and Coin Stores,5892.0,0.0
+tier_2,Quick Copy  Repro  and Blueprint,5684.0,0.0
+tier_2,Electrical Contractors,5676.0,0.0
+tier_2,Cruise Lines,5634.0,0.0
+tier_2,Sporting/Recreation Camps,5552.0,0.0
+tier_2,Luggage and Leather Goods Stores,5545.0,0.0
+tier_2,Child Care Services,5316.0,0.0
+tier_2,Aquariums,5247.0,0.0
+tier_2,Nursing/Personal Care,5187.0,0.0
+tier_2,Hearing Aids Sales and Supplies,5117.0,0.0
+tier_2,Miscellaneous Repair Shops,5040.0,0.0
+tier_2,Electric Razor Stores,4867.0,0.0
+tier_2,Roofing/Siding  Sheet Metal Contractors,4633.0,0.0
+tier_2,Digital Goods: Large Digital Goods Merchant,4459.0,0.0
+tier_2,Glassware  Crystal Stores,4406.0,0.0
+tier_2,Video Amusement Game Supplies,4315.0,0.0
+tier_2,Carpentry Contractors,3910.0,0.0
+tier_2,Orthopedic Goods - Prosthetic Devices,3895.0,0.0
+tier_2,Telegraph Services,3671.0,0.0
+tier_2,Dance Hall  Studios  Schools,3667.0,0.0
+tier_2,Cheque,3630.0,0.0
+tier_2,Insulation Masonry  Stonework  and Plaster Contractors,3615.0,0.0
+tier_2,Religious Goods Stores,3595.0,0.0
+tier_2,Tent and Awning Shops,3558.0,0.0
+tier_2,Electronic Repair Services,3429.0,0.0
+tier_2,Optometrists  Ophthalmologist,3307.0,0.0
+tier_2,Cinema,3095.0,0.0
+tier_2,Towing Services,3035.0,0.0
+tier_2,Auto Paint Shops,2937.0,0.0
+tier_2,Metal Service Centers,2857.0,0.0
+tier_2,Recreational and Utility Trailers  Camp Dealers,2678.0,0.0
+tier_2,Life Insurance,2562.0,0.0
+tier_2,Swimming Pools Sales,2549.0,0.0
+tier_2,Wig and Toupee Stores,2405.0,0.0
+tier_2,Office and Commercial Furniture,2274.0,0.0
+tier_2,Direct Marketing - Outbound Tele,2169.0,0.0
+tier_2,Video Tape Rental Stores,2103.0,0.0
+tier_2,Wrecking and Salvage Yards,2032.0,0.0
+tier_2,Truck/Utility Trailer Rentals,2017.0,0.0
+tier_2,Court Costs including Alimony and Child Support,1946.0,0.0
+tier_2,Boat Dealers,1837.0,0.0
+tier_2,Recreational Vehicle Rentals,1742.0,0.0
+tier_2,Sport & Leisure,1640.0,0.0
+tier_2,Airports  Flying Fields,1509.0,0.0
+tier_2,Book Clubs,1329.0,0.0
+tier_2,Exterminating Services,1228.0,0.0
+tier_2,Furniture Repair Services,1121.0,0.0
+tier_2,Clothing Rental,1119.0,0.0
+tier_2,Piece Goods  Notions  and Other Dry Goods,1052.0,0.0
+tier_2,Tailors  Alterations,1041.0,0.0
+tier_2,Secretarial Support Services,1024.0,0.0
+tier_2,Timeshares,1016.0,0.0
+tier_2,Pawn Shops,1004.0,0.0
+tier_2,Boat Rentals and Leases,972.0,0.0
+tier_2,Laundries,853.0,0.0
+tier_2,Mobile Home Dealers,790.0,0.0
+tier_2,Concrete Work Contractors,763.0,0.0
+tier_2,Testing Laboratories,634.0,0.0
+tier_2,Welding Repair Services,616.0,0.0
+tier_2,Motor Homes Dealers,547.0,0.0
+tier_2,Carpet/Upholstery Cleaning,477.0,0.0
+tier_2,Massage Parlors,472.0,0.0
+tier_2,Aircondition Repair Services,464.0,0.0
+tier_2,Cheques,380.0,0.0
+tier_2,Typesetting  Plate Making and Related Services,363.0,0.0
+tier_2,Tax Preparation Services,328.0,0.0
+tier_2,Footwear,265.0,0.0
+tier_2,Railroads - Freight,217.0,0.0
+tier_2,Billiard/Pool Establishments,212.0,0.0
+tier_2,Bowling Alleys,208.0,0.0
+tier_2,Door-To-Door Sales,135.0,0.0
+tier_2,Bail and Bond payments,118.0,0.0
+tier_2,Direct Marketing - Travel,75.0,0.0
+tier_2,Reversal,61.0,0.0
+tier_2,Ambulance Services,36.0,0.0
+tier_2,Intra Government Transactions,35.0,0.0
+tier_2,Transfer_In,10.0,0.0
+tier_2,Sports equipment,8.0,0.0
+tier_2,Typewriter Stores,7.0,0.0
+tier_2,Tax Credit,6.0,0.0
+tier_2,Compensation,3.0,0.0
+tier_2,Court Costs including Alimony and Child Support,2.0,0.0
+tier_3,"",3.45756135E8,68.97
+tier_3,General,5.0730964E7,10.12
+tier_3,Own Account,3.3563159E7,6.69
+tier_3,ATM,1.1188956E7,2.23
+tier_3,NullValue,5097013.0,1.02
+tier_3,Gas&Electricity,5006145.0,1.0
+tier_3,Bank,4370492.0,0.87
+tier_3,Subscriptions,3605158.0,0.72
+tier_3,Tax,2981170.0,0.59
+tier_3,Branch Deposit,2408179.0,0.48
+tier_3,Water,2373585.0,0.47
+tier_3,Life,2336408.0,0.47
+tier_3,Home Care/Service Plan/Warranty,2295346.0,0.46
+tier_3,Transfer/Payments_In,2196419.0,0.44
+tier_3,Misc,1801383.0,0.36
+tier_3,Retail Shopping,1792563.0,0.36
+tier_3,Child Benefit,1769076.0,0.35
+tier_3,Automotive,1623644.0,0.32
+tier_3,Men's & Women's Clothing,1431918.0,0.29
+tier_3,Account,1417711.0,0.28
+tier_3,Pension/Investments,1050562.0,0.21
+tier_3,Pet,973320.0,0.19
+tier_3,Post office counter,793067.0,0.16
+tier_3,Payments/Invoices/Merchant Clearance,742746.0,0.15
+tier_3,Cash Deposit Machine,735986.0,0.15
+tier_3,Pension Credit,704493.0,0.14
+tier_3,Home,692321.0,0.14
+tier_3,Winnings,632650.0,0.13
+tier_3,Universal Credit,625376.0,0.12
+tier_3,Women's Clothing,618776.0,0.12
+tier_3,Foreign,570680.0,0.11
+tier_3,Employment Support Allowance,565404.0,0.11
+tier_3,Health/Dental/Cash Plans/Eye Care,545734.0,0.11
+tier_3,Trade Union,539581.0,0.11
+tier_3,Child Tax Credit,501716.0,0.1
+tier_3,Post office counter deposit,474836.0,0.09
+tier_3,Personal Independence Payment,430107.0,0.09
+tier_3,Transfer_In_Foreign,425793.0,0.08
+tier_3,Veterinary Services,348534.0,0.07
+tier_3,Carers’ Allowance,347304.0,0.07
+tier_3,Working & Child Tax Credit,276920.0,0.06
+tier_3,Electricity,266750.0,0.05
+tier_3,Gas,248409.0,0.05
+tier_3,Health,238433.0,0.05
+tier_3,Disability Living Allowance,222526.0,0.04
+tier_3,Attendance Allowance,219713.0,0.04
+tier_3,Gym/Sports,203509.0,0.04
+tier_3,Shoe,200271.0,0.04
+tier_3,Lottery,196351.0,0.04
+tier_3,Children's Clothing,195609.0,0.04
+tier_3,IT/Software/Equipement,189396.0,0.04
+tier_3,News/Magazines,178318.0,0.04
+tier_3,Colleges  Universities  Professional Schools and Junior Colleges,167602.0,0.03
+tier_3,Working Tax Credit,160903.0,0.03
+tier_3,Credit Plan,141446.0,0.03
+tier_3,Mobile/Gadgets,139771.0,0.03
+tier_3,Men's Clothing,130425.0,0.03
+tier_3,Car and Truck Dealers (New & Used) Sales,113177.0,0.02
+tier_3,Schools and Educational Services - not elsewhere classified,109938.0,0.02
+tier_3,Sports Clothing,105099.0,0.02
+tier_3,AIR NEW ZEALAND,93143.0,0.02
+tier_3,Industrial Injuries Benefit,90330.0,0.02
+tier_3,Income Support,89067.0,0.02
+tier_3,Job Seekers Allowance,85512.0,0.02
+tier_3,Women's Accessories,82526.0,0.02
+tier_3,Political Party,82107.0,0.02
+tier_3,Insurance,80042.0,0.02
+tier_3,Lease,76516.0,0.02
+tier_3,Clubs (Sports  Recreation  Athletic),73086.0,0.01
+tier_3,Reward Schemes,62174.0,0.01
+tier_3,Cold Weather Payment,53111.0,0.01
+tier_3,Boiler,50438.0,0.01
+tier_3,"Rent, Letting or Maintenance Fees",46991.0,0.01
+tier_3,Rent,31611.0,0.01
+tier_3,Car and Truck Dealers (Used Only),29365.0,0.01
+tier_3,Sanitary Services,26350.0,0.01
+tier_3,PREMIER INN,25348.0,0.01
+tier_3,EASYJET,24839.0,0.0
+tier_3,RYANAIR,23314.0,0.0
+tier_3,Non Domestic Rates,22417.0,0.0
+tier_3,Professional/Regulatory Body,22163.0,0.0
+tier_3,BRITISH AIRWAYS,19247.0,0.0
+tier_3,Telecomunications,19123.0,0.0
+tier_3,Specialised provider,18902.0,0.0
+tier_3,TRAVELODGE,17949.0,0.0
+tier_3,AVIS RENT-A-CAR,16957.0,0.0
+tier_3,UNITED AIRLINES,16636.0,0.0
+tier_3,ENTERPRISE RENT-A-CAR,15971.0,0.0
+tier_3,Mortgage,14514.0,0.0
+tier_3,Schools  Business and Secretarial,14424.0,0.0
+tier_3,Housing Support,13584.0,0.0
+tier_3,Bereavement Allowance,13358.0,0.0
+tier_3,Schools  Elementary and Secondary,13107.0,0.0
+tier_3,Maternity Allowance,11151.0,0.0
+tier_3,Logistics,10869.0,0.0
+tier_3,Winter Fuel Payment,9782.0,0.0
+tier_3,Social Fund,9752.0,0.0
+tier_3,Schools  Trade and Vocational,9085.0,0.0
+tier_3,Government-Owned Lotteries,8700.0,0.0
+tier_3,Debt Collection,8364.0,0.0
+tier_3,Student Finance,8291.0,0.0
+tier_3,Property Management & Maintenance Fees,7964.0,0.0
+tier_3,Golf,7301.0,0.0
+tier_3,KLM (ROYAL DUTCH AIRLINES),7200.0,0.0
+tier_3,Severe Disablement Allowance,6813.0,0.0
+tier_3,Water Services,6026.0,0.0
+tier_3,WIZZ AIR,5984.0,0.0
+tier_3,HOLIDAY INNS  HOLIDAY INN EXPRESS,5158.0,0.0
+tier_3,Automobile Associations,4775.0,0.0
+tier_3,Widow’s Benefit,4273.0,0.0
+tier_3,Business,4105.0,0.0
+tier_3,Software,3662.0,0.0
+tier_3,Sanitary,3430.0,0.0
+tier_3,AER LINGUS,3256.0,0.0
+tier_3,EMIRATES AIRLINES,3166.0,0.0
+tier_3,Travel,2905.0,0.0
+tier_3,Furriers and Fur,2896.0,0.0
+tier_3,HILTON HOTELS,2728.0,0.0
+tier_3,EUROP CAR,2713.0,0.0
+tier_3,Heating,2439.0,0.0
+tier_3,Branch,2396.0,0.0
+tier_3,HOTEL IBIS,2353.0,0.0
+tier_3,LUFTHANSA,2021.0,0.0
+tier_3,HERTZ RENT-A-CAR,1734.0,0.0
+tier_3,Swimming Pools,1640.0,0.0
+tier_3,Education,1562.0,0.0
+tier_3,AIR FRANCE,1462.0,0.0
+tier_3,MERIDIEN HOTELS,1322.0,0.0
+tier_3,Christmas Bonus,1188.0,0.0
+tier_3,Credit Card Balance Payment,1138.0,0.0
+tier_3,TURKISH AIRLINES,1001.0,0.0
+tier_3,SAS,833.0,0.0
+tier_3,THRIFTY RENT-A-CAR,749.0,0.0
+tier_3,NOVOTEL HOTELS,672.0,0.0
+tier_3,VIRGIN ATLANTIC,658.0,0.0
+tier_3,MARRIOTT HOTELS,602.0,0.0
+tier_3,Lump sums,596.0,0.0
+tier_3,AIR CANADA,592.0,0.0
+tier_3,HYATT HOTEL,507.0,0.0
+tier_3,DOUBLETREE HOTELS,465.0,0.0
+tier_3,SIXT CAR RENTAL,463.0,0.0
+tier_3,Income Protection,407.0,0.0
+tier_3,SHERATON HOTELS,402.0,0.0
+tier_3,CROWNE PLAZA HOTELS,401.0,0.0
+tier_3,AFFILIATED AUTO RENTAL,399.0,0.0
+tier_3,RADISSON BLU,384.0,0.0
+tier_3,FAIRMONT HOTELS,384.0,0.0
+tier_3,Tennis,349.0,0.0
+tier_3,Schools  Correspondence,345.0,0.0
+tier_3,WESTIN HOTELS,329.0,0.0
+tier_3,ALITALIA,279.0,0.0
+tier_3,HAMPTON INNS,232.0,0.0
+tier_3,INTER-CONTINENTAL HOTELS,222.0,0.0
+tier_3,FOUR SEASONS HOTELS,209.0,0.0
+tier_3,Dental,204.0,0.0
+tier_3,Art,201.0,0.0
+tier_3,AIR-INDIA,199.0,0.0
+tier_3,RADISSON HOTELS,197.0,0.0
+tier_3,BEST WESTERN HOTELS,194.0,0.0
+tier_3,WYNDHAM HOTEL AND RESORTS,189.0,0.0
+tier_3,SOFITEL HOTELS,184.0,0.0
+tier_3,PARK INNS INTERNATIONAL,174.0,0.0
+tier_3,Manual Cash Disburse,174.0,0.0
+tier_3,AEORFLOT,163.0,0.0
+tier_3,COURTYARD BY MARRIOTT,161.0,0.0
+tier_3,Bereavement Payment,153.0,0.0
+tier_3,RENAISSANCE HOTELS  STOUFFER HOTELS,144.0,0.0
+tier_3,BRUSSELS AIRLINES,143.0,0.0
+tier_3,HILTON GARDEN INN,139.0,0.0
+tier_3,THE RITZ CARLTON HOTELS,138.0,0.0
+tier_3,Let,137.0,0.0
+tier_3,MOVENPICK HOTELS,136.0,0.0
+tier_3,RAMADA INNS  RAMADA LIMITED,127.0,0.0
+tier_3,FINNAIR,115.0,0.0
+tier_3,AIR MALTA,109.0,0.0
+tier_3,MILLENIUM BROADWAY HOTEL,97.0,0.0
+tier_3,GULF AIR (BAHRAIN),96.0,0.0
+tier_3,BUDGET RENT-A-CAR,88.0,0.0
+tier_3,EGYPTAIR,88.0,0.0
+tier_3,MIDDLE EAST AIRLINES,84.0,0.0
+tier_3,QATAR AIRWAYS,73.0,0.0
+tier_3,CAMPANIEL HOTELS,72.0,0.0
+tier_3,QANTAS,67.0,0.0
+tier_3,NATIONAL CAR RENTAL,55.0,0.0
+tier_3,TAP (PORTUGAL),53.0,0.0
+tier_3,SHANGRI-LA INTERNATIONAL,50.0,0.0
+tier_3,SAUDIA ARABIAN AIRLINES,47.0,0.0
+tier_3,DELTA,46.0,0.0
+tier_3,Land and Property,40.0,0.0
+tier_3,PHILIPPINE AIRLINES,39.0,0.0
+tier_3,DOLLAR RENT-A-CAR,37.0,0.0
+tier_3,ALOFT,36.0,0.0
+tier_3,Cinema/Theatre,35.0,0.0
+tier_3,PENTA HOTELS,35.0,0.0
+tier_3,LUXAIR,34.0,0.0
+tier_3,LOEWS HOTELS,33.0,0.0
+tier_3,Boat,31.0,0.0
+tier_3,AIR ARABIA,29.0,0.0
+tier_3,HILTON CONRAD,29.0,0.0
+tier_3,KUWAIT AIRLINES,28.0,0.0
+tier_3,KENYA AIRLINES,27.0,0.0
+tier_3,EL AL,27.0,0.0
+tier_3,HOTEL MERCURE,27.0,0.0
+tier_3,HOSPITALITY INTERNATIONAL,27.0,0.0
+tier_3,AMERICAN AIRLINES,26.0,0.0
+tier_3,CROATIA AIRLINES,26.0,0.0
+tier_3,GENERAL RENT-A-CAR,25.0,0.0
+tier_3,THAI AIRWAYS,24.0,0.0
+tier_3,IBERIA,24.0,0.0
+tier_3,COMFORT INNS,23.0,0.0
+tier_3,Private Banking,23.0,0.0
+tier_3,RAFFLES HOTELS,23.0,0.0
+tier_3,JAPAN AIRLINES,22.0,0.0
+tier_3,FOUR POINTS HOTEL,22.0,0.0
+tier_3,PULLMAN INTERNATIONAL HOTELS,21.0,0.0
+tier_3,W HOTELS,21.0,0.0
+tier_3,BELLAGIO,21.0,0.0
+tier_3,AMERISUITES,20.0,0.0
+tier_3,SHOWCASE RENTAL CARS,19.0,0.0
+tier_3,HILTON INTERNATIONAL,18.0,0.0
+tier_3,AIR ALGERIE,17.0,0.0
+tier_3,ROYAL AIR MAROC,17.0,0.0
+tier_3,STEIGENBERGER HOTELS,16.0,0.0
+tier_3,SCANDIC HOTELS,16.0,0.0
+tier_3,AEROMEXICO,16.0,0.0
+tier_3,MERCHANTS RENT-A-CAR,13.0,0.0
+tier_3,AVIANCA,13.0,0.0
+tier_3,OBEROI HOTELS,12.0,0.0
+tier_3,HOTELES MELIA,11.0,0.0
+tier_3,HYATT PLACE,11.0,0.0
+tier_3,LAN AIRLINES,10.0,0.0
+tier_3,Training Payment,10.0,0.0
+tier_3,JETSTAR AIRWAYS,10.0,0.0
+tier_3,PASSION AIR,10.0,0.0
+tier_3,CITY LODGE HOTELS,10.0,0.0
+tier_3,AUSTRIAN AIRLINES,9.0,0.0
+tier_3,FARIFIELD INN,9.0,0.0
+tier_3,NORWEGIAN,9.0,0.0
+tier_3,SWISSAIR,9.0,0.0
+tier_3,EXTENDED STAY,8.0,0.0
+tier_3,AIR ASTANA,8.0,0.0
+tier_3,ADVANTAGE RENT-A-CAR,8.0,0.0
+tier_3,ICELANDAIR,8.0,0.0
+tier_3,MARITIM HOTELS,7.0,0.0
+tier_3,DISNEY RESORTS,7.0,0.0
+tier_3,VARIG (BRAZIL),7.0,0.0
+tier_3,ARIA,7.0,0.0
+tier_3,ALL NIPPON AIRWAYS,7.0,0.0
+tier_3,MANDARIN ORIENTAL HOTEL,7.0,0.0
+tier_3,AUTOGRAPH,6.0,0.0
+tier_3,HOMEWOOD SUITES,6.0,0.0
+tier_3,GOLDEN TULIP HOTELS,6.0,0.0
+tier_3,WYNN LAS VEGAS,6.0,0.0
+tier_3,Account Switch offer,6.0,0.0
+tier_3,WALDORF,6.0,0.0
+tier_3,Benefits,6.0,0.0
+tier_3,REGENT INTERNATIONAL HOTELS,6.0,0.0
+tier_3,CARLTON HOTELS,5.0,0.0
+tier_3,MIRAGE HOTEL AND CASION,5.0,0.0
+tier_3,EMBASSY SUITES,5.0,0.0
+tier_3,AMERICAN INTL RENT-A-CAR,5.0,0.0
+tier_3,ADAMS MARK HOTELS,5.0,0.0
+tier_3,MGM GRAND HOTEL,5.0,0.0
+tier_3,ETIHAD AIRWAYS,5.0,0.0
+tier_3,TACA INTERNATIONAL,5.0,0.0
+tier_3,OMAN AIR,5.0,0.0
+tier_3,TAROM,5.0,0.0
+tier_3,PAKISTAN INTERNATIONAL,4.0,0.0
+tier_3,CONCORDE HOTELS,4.0,0.0
+tier_3,PROTEA HOTELS,4.0,0.0
+tier_3,PARIS LAS VEGAS HOTEL,4.0,0.0
+tier_3,MONTE CARLO HOTEL AND CASINO,4.0,0.0
+tier_3,WELCOMGROUP HOTELS,4.0,0.0
+tier_3,KOREAN AIRLINES,4.0,0.0
+tier_3,LA QUINTA MOTOR INNS,4.0,0.0
+tier_3,COSMOPOLITAN OF LAS VEGAS,4.0,0.0
+tier_3,AEROLINEAS ARGENTINAS,4.0,0.0
+tier_3,ALAMO RENT-A-CAR,4.0,0.0
+tier_3,ALLSTAE RENT-A-CAR,4.0,0.0
+tier_3,GAYLORD ORRYLAND,3.0,0.0
+tier_3,WESTJET,3.0,0.0
+tier_3,BILTMORE HOTEL AND SUITES,3.0,0.0
+tier_3,HOTEIS OTHAN,3.0,0.0
+tier_3,MANDALAY BAY RESORT,3.0,0.0
+tier_3,CAESAR'S HOTEL AND CASINO,3.0,0.0
+tier_3,CARIBBEAN AIRLINES,3.0,0.0
+tier_3,STRATOSPHERE HOTEL AND CASINO,3.0,0.0
+tier_3,EXALIBUR HOTEL AND CASINO,3.0,0.0
+tier_3,SINGAPORE AIRLINES,3.0,0.0
+tier_3,OMNI HOTELS,3.0,0.0
+tier_3,UNI AIRWAYS,3.0,0.0
+tier_3,THE VENETIAN RESORT HOTEL CASINO,2.0,0.0
+tier_3,DAYS INN  DAYSTOP,2.0,0.0
+tier_3,RESIDENCE INNS,2.0,0.0
+tier_3,VDARA,2.0,0.0
+tier_3,MICROTEL INNS & SUITES,2.0,0.0
+tier_3,COUNTRY INN BY CARLSON,2.0,0.0
+tier_3,BAHAMASAIR,2.0,0.0
+tier_3,ROYAL HOTELS,2.0,0.0
+tier_3,HARRAH'S HOTELS AND CASINOS,2.0,0.0
+tier_3,SOKOS HOTELS,2.0,0.0
+tier_3,Incapacity Benefit,2.0,0.0
+tier_3,SPRINGHILLL SUITES,2.0,0.0
+tier_3,LXR,2.0,0.0
+tier_3,SOUTHERN SUN HOTELS,2.0,0.0
+tier_3,DELTA HOTEL,2.0,0.0
+tier_3,AIR CHINA,2.0,0.0
+tier_3,ANSA INTL RENT-A-CAR,2.0,0.0
+tier_3,CEBU PACIFIC AIRLINES,2.0,0.0
+tier_3,FLAMINGO HOTELS,2.0,0.0
+tier_3,SUN ROUTE HOTELS,2.0,0.0
+tier_3,FORTE HOTELS,2.0,0.0
+tier_3,TAJ HOTELS INTERNATIONAL,2.0,0.0
+tier_3,ARABELLA HOTELS,1.0,0.0
+tier_3,LOT (POLAND),1.0,0.0
+tier_3,SANDMAN HOTELS,1.0,0.0
+tier_3,IMPERIAL LONDON HOTEL,1.0,0.0
+tier_3,IBEROTEL HOTELS,1.0,0.0
+tier_3,QUALITY INNS  QUALITY SUITES,1.0,0.0
+tier_3,Loan,1.0,0.0
+tier_3,HARVEY/BRISTOL HOTELS,1.0,0.0
+tier_3,CLUBCORP/CLUB RESORTS,1.0,0.0
+tier_3,Government-Licensed Horse/Dog Racing,1.0,0.0
+tier_3,FIRST HOSPITALITY HOTELS,1.0,0.0
+tier_3,FONTAINEBLEAU RESORTS,1.0,0.0
+tier_3,NEW YORK-NEW YORK HOTEL AND CASINO,1.0,0.0
+tier_3,FORUM HOTELS,1.0,0.0
+tier_3,TOWNPLACE SUITES,1.0,0.0
+tier_3,ASIANA AIRLINES,1.0,0.0
+tier_3,TAM AIRLINES,1.0,0.0
+tier_3,STAYBRIDGE SUITES,1.0,0.0
+tier_3,SONESTA HOTELS,1.0,0.0
+tier_3,GOLDEN NUGGET,1.0,0.0
+tier_3,SPIRIT AIRLINES,1.0,0.0
+tier_3,CANDLEWOOD SUITES,1.0,0.0
+tier_3,ELEMENT,1.0,0.0
+transaction_type,POS,2.2625083E8,45.13
+transaction_type,DPC,7.2170071E7,14.4
+transaction_type,D/D,6.3623162E7,12.69
+transaction_type,BAC,6.226745E7,12.42
+transaction_type,CC,2.7719711E7,5.53
+transaction_type,S/O,9769318.0,1.95
+transaction_type,XXX,6261774.0,1.25
+transaction_type,EBP,5747035.0,1.15
+transaction_type,CHG TO,3594870.0,0.72
+transaction_type,C/L  1,3404455.0,0.68
+transaction_type,C/L  2,3018521.0,0.6
+transaction_type,INT TO,1826779.0,0.36
+transaction_type,C/L  3,1651521.0,0.33
+transaction_type,U/D,1534132.0,0.31
+transaction_type,POC,1267903.0,0.25
+transaction_type,TRF,1224719.0,0.24
+transaction_type,C/L,1012867.0,0.2
+transaction_type,CHP,957994.0,0.19
+transaction_type,C/L  4,898674.0,0.18
+transaction_type,103,822255.0,0.16
+transaction_type,CDM,754990.0,0.15
+transaction_type,ITL,542316.0,0.11
+transaction_type,MSC,539051.0,0.11
+transaction_type,C/L  5,487419.0,0.1
+transaction_type,IBP,459995.0,0.09
+transaction_type,CHG,455651.0,0.09
+transaction_type,STO,397791.0,0.08
+transaction_type,GSD,334246.0,0.07
+transaction_type,C/L  6,278933.0,0.06
+transaction_type,202,225254.0,0.04
+transaction_type,SBT,223610.0,0.04
+transaction_type,TSU,201046.0,0.04
+transaction_type,STF,186870.0,0.04
+transaction_type,NDC,180420.0,0.04
+transaction_type,C/L  7,169724.0,0.03
+transaction_type,TFR,160844.0,0.03
+transaction_type,BSP,144652.0,0.03
+transaction_type,C/L  8,108140.0,0.02
+transaction_type,BLN,84509.0,0.02
+transaction_type,C/L  9,70078.0,0.01
+transaction_type,UTF,48141.0,0.01
+transaction_type,INT,40318.0,0.01
+transaction_type,UDD,28377.0,0.01
+transaction_type,CHK,24463.0,0.0
+transaction_type,TFX,22727.0,0.0
+transaction_type,SDR,20422.0,0.0
+transaction_type,LST,16255.0,0.0
+transaction_type,SAO,15917.0,0.0
+transaction_type,SCR,12883.0,0.0
+transaction_type,LON TO,12705.0,0.0
+transaction_type,IAT,12197.0,0.0
+transaction_type,TO,12196.0,0.0
+transaction_type,BGC,6338.0,0.0
+transaction_type,WSF,5075.0,0.0
+transaction_type,200,3189.0,0.0
+transaction_type,EDC,2817.0,0.0
+transaction_type,PAY,2711.0,0.0
+transaction_type,CAO,2700.0,0.0
+transaction_type,COL,1309.0,0.0
+transaction_type,100,1116.0,0.0
+transaction_type,DCR,1045.0,0.0
+transaction_type,SBC,1007.0,0.0
+transaction_type,DDT,954.0,0.0
+transaction_type,CST,935.0,0.0
+transaction_type,WSM,874.0,0.0
+transaction_type,ACI,871.0,0.0
+transaction_type,LON,574.0,0.0
+transaction_type,COM,532.0,0.0
+transaction_type,EDC TO,452.0,0.0
+transaction_type,D/C,298.0,0.0
+transaction_type,SBT TO,295.0,0.0
+transaction_type,LPC,294.0,0.0
+transaction_type,TLR,197.0,0.0
+transaction_type,PAC,80.0,0.0
+transaction_type,IPO,40.0,0.0
+transaction_type,#ST,40.0,0.0
+transaction_type,SAC,20.0,0.0
+transaction_type,CLR,20.0,0.0
+transaction_type,GTE,12.0,0.0
+transaction_type,SRF,6.0,0.0
+transaction_type,TRV,6.0,0.0
+transaction_type,IBP TO,5.0,0.0
+transaction_type,TGT,4.0,0.0
+transaction_type,SBT T,2.0,0.0
+transaction_type,SRV,1.0,0.0
+transaction_type,PMT,1.0,0.0
+transaction_type,OLB,1.0,0.0
