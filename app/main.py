@@ -12,7 +12,18 @@ from utils.spark_utils import get_local_spark_session, get_spark_conf_as_json
 
 app = FastAPI()
 
-spark = get_local_spark_session(app_name="Testing local spark")
+spark = get_local_spark_session(app_name="default session")
+
+
+@app.on_event("startup")
+async def startup_event():
+    spark = get_local_spark_session(app_name="fastApi Startup")
+    return spark
+
+
+@app.on_event("shutdown")
+def shutdown_event():
+    spark.stop()
 
 
 @app.get("/")
