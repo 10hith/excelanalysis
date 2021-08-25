@@ -33,3 +33,11 @@ Restart-Service LxssManager
 # Configuring Git for large files
  sudo apt-get install git-lfs
  git lfs install
+
+ # docker build -t excelanalysis .
+# docker login -u 10hith https://index.docker.io/v1/
+# docker push 10hith/excelanalysis
+# docker login -u 10hith -p "#7804c11bN" https://index.docker.io/v1/
+# 5c37607c-fe2a-4b7b-9a4a-355213954f19
+# C:\Users\lohith\.docker; config.json - below
+# {"auths":{"docker.io":{"auth":"5c37607c-fe2a-4b7b-9a4a-355213954f19","email":"lohith.uvce@gmail.com"}},"credsStore":"desktop","currentContext":"default"}
