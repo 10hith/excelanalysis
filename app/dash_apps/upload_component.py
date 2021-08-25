@@ -12,6 +12,7 @@ from utils.spark_utils import get_local_spark_session
 from utils.deutils import run_profile
 from pyspark.sql import functions as f
 import databricks.koalas as ks
+# from app.main import spark
 import json
 
 # df = pd.DataFrame()
@@ -30,7 +31,7 @@ app = dash.Dash(
     __name__,
     external_stylesheets=external_stylesheets,
     suppress_callback_exceptions=True,
-    # requests_pathname_prefix="/upload/"
+    requests_pathname_prefix="/upload/"
 )
 
 app.layout = html.Div([
