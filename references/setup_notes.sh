@@ -41,3 +41,12 @@ Restart-Service LxssManager
 # 5c37607c-fe2a-4b7b-9a4a-355213954f19
 # C:\Users\lohith\.docker; config.json - below
 # {"auths":{"docker.io":{"auth":"5c37607c-fe2a-4b7b-9a4a-355213954f19","email":"lohith.uvce@gmail.com"}},"credsStore":"desktop","currentContext":"default"}
+
+'''Installing Postgres12 on ubuntu'
+https://www.tutlinks.com/install-postgresql-12-on-ubuntu/#connect-and-query-to-postgresql-database-from-python
+sudo /etc/init.d/postgresql status [start, stop]
+Tutorial
+# https://www.tutlinks.com/install-postgresql-12-on-ubuntu/#connect-and-query-to-postgresql-database-from-python
+Running docker images:
+docker run --name postgres-docker -e POSTGRES_PASSWORD=example123 -p 5432:5432 -d postgres:latest
+with this, username and dbname is postgres
