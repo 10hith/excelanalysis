@@ -1,7 +1,7 @@
 services:
 
     backend_local:
-        image: excelanalysis:latest
+        image: 10hith/eapp:latest
         restart: always
         ports:
             - 80:80

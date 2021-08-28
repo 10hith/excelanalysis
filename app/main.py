@@ -1,11 +1,5 @@
 from fastapi import FastAPI
-import dash_labs as dl
-import pandas as pd
-import dash
-import dash_core_components as dcc
-import dash_bootstrap_components as dbc
-import plotly.express as px
-from dash_apps.upload_component import app as app_upload
+from dash_apps.upload_component_withGraph import app as app_upload
 from fastapi.middleware.wsgi import WSGIMiddleware
 
 from utils.spark_utils import get_local_spark_session, get_spark_conf_as_json
