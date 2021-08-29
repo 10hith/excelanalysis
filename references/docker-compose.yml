@@ -3,8 +3,8 @@ version: '3'
 # docker stack deploy -c docker.dns.yml someName; docker service logs name_name
 services:
   traefik:
-    # The latest official supported Traefik docker image
-    image: traefik:v2.3
+    # The latest official supported Traefik docker image; v2.5.1
+    image: traefik:v2.5.1
     # Enables the Traefik Dashboard and tells Traefik to listen to docker
     # enable --log.level=INFO so we can see what Traefik is doing in the log files
     ports:
@@ -22,6 +22,7 @@ services:
       - ./traefik.dns.yml:/etc/traefik/traefik.yml
     environment:
       - "DO_AUTH_TOKEN=725861c6568880757b9a08c72b7f977756ca52d404bbefbfa1b096c9b4d112ec"
+
 
 # Add the excel analysis service
   excelanalysis:

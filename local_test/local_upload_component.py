@@ -2,6 +2,7 @@ import base64
 import datetime
 import io
 import uuid
+from dash.long_callback import DiskcacheLongCallbackManager
 
 import dash
 from dash import dcc, html, Input, Output, State, dash_table
@@ -19,7 +20,7 @@ app = dash.Dash(
     __name__,
     external_stylesheets=external_stylesheets,
     suppress_callback_exceptions=True,
-    requests_pathname_prefix="/upload/"
+    # requests_pathname_prefix="/upload/"
 )
 
 app.layout = html.Div([
@@ -74,71 +75,67 @@ def display_sample_datatable(list_of_contents, list_of_names, list_of_dates):
         html.Br(),
         dash_table.DataTable(
             data=pdf.head(100).to_dict('records'),
-            columns=[{'name': i, 'id': i} for i in pdf.columns],
-            virtualization=True,
-            fixed_rows={'headers': True},
-            style_cell={'minWidth': 95, 'width': 95, 'maxWidth': 95},
-            style_table={'height': 300}  # default is 500
+            columns=[{'name': i, 'id': i} for i in pdf.columns]
             ),
         html.Br(),
         html.Button("Start Analysis", id="startAnalysis", n_clicks=0),
         html.H2(f"uid for this dataset is {uuid.uuid4().hex}"),
         ])
 
-
-@app.callback(Output('contentAsState', 'children'),
-              Input('startAnalysis', 'n_clicks'),
-              State('upload-data', 'contents'),
-              State('upload-data', 'filename'),
-              )
-def using_content_as_state(n_clicks, list_of_contents, list_of_names):
-    if n_clicks>=1:
-        if list_of_contents is not None:
-            try:
-                kdf = read_upload_into_kdf(list_of_contents, list_of_names)
-            except Exception as e:
-                print(e)
-                return html.Div([
-                    'There was an error processing this file.'
-                ])
-
-        if list_of_contents is None:
-            return html.Div([])
-
-        # kdf = ks.from_pandas(kdf)
-        sdf_raw = kdf.to_spark()
-        sdf = sdf_raw.transform(with_std_column_names())
-        profiled_df = run_profile(spark, sdf)
-
-        histogram_sdf = profiled_df.\
-            select(
-            "column_name",
-            f.explode("histogram").alias("histogram")
-        ).selectExpr(
-            "column_name",
-            "histogram.value as value",
-            "histogram.num_occurrences as numOcc",
-            "histogram.ratio as ratio")
-
-        histogram_kdf = histogram_sdf.to_koalas()
-
-        summary_stats_sdf = profiled_df.drop("histogram")
-        summary_stats_kdf = summary_stats_sdf.to_koalas()
-
-        return html.Div([
-            html.H2("Displaying summaryStats"),
-            html.Br(),
-            dash_table.DataTable(
-                data=summary_stats_kdf.to_dict('records'),
-                columns=[{'name': i, 'id': i} for i in summary_stats_kdf.columns]
-            ),
-            html.H2("Displaying histogram data"),
-            html.Br(),
-            dash_table.DataTable(
-                data=histogram_kdf.to_dict('records'),
-                columns=[{'name': i, 'id': i} for i in histogram_kdf.columns]
-            ),
-        ])
+#
+# @app.callback(Output('contentAsState', 'children'),
+#               Input('startAnalysis', 'n_clicks'),
+#               State('upload-data', 'contents'),
+#               State('upload-data', 'filename'),
+#               )
+# def using_content_as_state(n_clicks, list_of_contents, list_of_names):
+#     if n_clicks>=1:
+#         if list_of_contents is not None:
+#             try:
+#                 kdf = read_upload_into_kdf(list_of_contents, list_of_names)
+#             except Exception as e:
+#                 print(e)
+#                 return html.Div([
+#                     'There was an error processing this file.'
+#                 ])
+#
+#         if list_of_contents is None:
+#             return html.Div([])
+#
+#         # kdf = ks.from_pandas(kdf)
+#         sdf_raw = kdf.to_spark()
+#         sdf = sdf_raw.transform(with_std_column_names())
+#         profiled_df = run_profile(spark, sdf)
+#
+#         histogram_sdf = profiled_df.\
+#             select(
+#             "column_name",
+#             f.explode("histogram").alias("histogram")
+#         ).selectExpr(
+#             "column_name",
+#             "histogram.value as value",
+#             "histogram.num_occurrences as numOcc",
+#             "histogram.ratio as ratio")
+#
+#         histogram_kdf = histogram_sdf.to_koalas()
+#
+#         summary_stats_sdf = profiled_df.drop("histogram")
+#         summary_stats_kdf = summary_stats_sdf.to_koalas()
+#
+#         return html.Div([
+#             html.H2("Displaying summaryStats"),
+#             html.Br(),
+#             dash_table.DataTable(
+#                 data=summary_stats_kdf.to_dict('records'),
+#                 columns=[{'name': i, 'id': i} for i in summary_stats_kdf.columns]
+#             ),
+#             html.H2("Displaying histogram data"),
+#             html.Br(),
+#             dash_table.DataTable(
+#                 data=histogram_kdf.to_dict('records'),
+#                 columns=[{'name': i, 'id': i} for i in histogram_kdf.columns]
+#             ),
+#         ])
 
 
 if __name__ == '__main__':
