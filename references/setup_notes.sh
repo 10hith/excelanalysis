@@ -34,13 +34,14 @@ Restart-Service LxssManager
  sudo apt-get install git-lfs
  git lfs install
 
- # docker build -t excelanalysis .
-# docker login -u 10hith https://index.docker.io/v1/
-# docker push 10hith/excelanalysis
-# docker login -u 10hith -p "#7804c11bN" https://index.docker.io/v1/
-# 5c37607c-fe2a-4b7b-9a4a-355213954f19
-# C:\Users\lohith\.docker; config.json - below
-# {"auths":{"docker.io":{"auth":"5c37607c-fe2a-4b7b-9a4a-355213954f19","email":"lohith.uvce@gmail.com"}},"credsStore":"desktop","currentContext":"default"}
+''' Docker commands '''
+docker run -p 80:80 -d --name eapp eapp:latest
+docker build -t excelanalysis .
+docker login -u 10hith https://index.docker.io/v1/
+docker push 10hith/excelanalysis
+docker login -u 10hith -p "PSWD" https://index.docker.io/v1/
+C:\Users\lohith\.docker; config.json - below
+{"auths":{"docker.io":{"auth":"asjkldflasjdfSomeThing","email":"lohith.uvce@gmail.com"}},"credsStore":"desktop","currentContext":"default"}
 
 '''Installing Postgres12 on ubuntu'
 https://www.tutlinks.com/install-postgresql-12-on-ubuntu/#connect-and-query-to-postgresql-database-from-python
