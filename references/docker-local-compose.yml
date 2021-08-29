@@ -1,0 +1,11 @@
+services:
+
+    backend_local:
+        image: 10hith/eapp:latest
+        restart: always
+        ports:
+            - 80:80
+
+networks:
+    traefik-public:
+        external: false

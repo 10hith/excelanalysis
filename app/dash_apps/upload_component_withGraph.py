@@ -1,15 +1,18 @@
-import base64
-import datetime
-import io
 import uuid
 
 import dash
-from dash import dcc, html, Input, Output, State, dash_table
+from dash import dcc, html, Input, Output, State, MATCH, dash_table
+import dash_bootstrap_components as dbc
+from dash.exceptions import PreventUpdate
+import plotly_express as px
+import databricks.koalas as ks
+
 from pyspark.sql import functions as f
+import numpy as np
 
 from utils.spark_utils import get_local_spark_session, with_std_column_names
 from utils.deutils import run_profile
-from utils.dash_utils import read_upload_into_pdf, read_upload_into_kdf
+from utils.dash_utils import read_upload_into_pdf, read_upload_into_kdf, create_dynamic_card
 
 spark = get_local_spark_session(app_name="Upload Application")
 
@@ -17,12 +20,12 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(
     __name__,
-    external_stylesheets=external_stylesheets,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
     requests_pathname_prefix="/upload/"
 )
 
-app.layout = html.Div([
+app.layout = dbc.Container([
     dcc.Upload(
         id='upload-data',
         children=html.Div([
@@ -47,6 +50,7 @@ app.layout = html.Div([
     dcc.Store(id='resultStore', data=[]),
     dcc.Store(id='idStore', data=[]),
     html.Div(id='contentAsState', children=[]),
+    dbc.Container(id='displayAnalysis',children=[]),
 ])
 
 
@@ -86,7 +90,7 @@ def display_sample_datatable(list_of_contents, list_of_names, list_of_dates):
         ])
 
 
-@app.callback(Output('contentAsState', 'children'),
+@app.callback(Output('displayAnalysis', 'children'),
               Input('startAnalysis', 'n_clicks'),
               State('upload-data', 'contents'),
               State('upload-data', 'filename'),
@@ -95,7 +99,7 @@ def using_content_as_state(n_clicks, list_of_contents, list_of_names):
     if n_clicks>=1:
         if list_of_contents is not None:
             try:
-                kdf = read_upload_into_kdf(list_of_contents, list_of_names)
+                pdf = read_upload_into_pdf(list_of_contents, list_of_names)
             except Exception as e:
                 print(e)
                 return html.Div([
@@ -106,6 +110,7 @@ def using_content_as_state(n_clicks, list_of_contents, list_of_names):
             return html.Div([])
 
         # kdf = ks.from_pandas(kdf)
+        kdf=ks.from_pandas(pdf)
         sdf_raw = kdf.to_spark()
         sdf = sdf_raw.transform(with_std_column_names())
         profiled_df = run_profile(spark, sdf)
@@ -117,28 +122,88 @@ def using_content_as_state(n_clicks, list_of_contents, list_of_names):
         ).selectExpr(
             "column_name",
             "histogram.value as value",
-            "histogram.num_occurrences as numOcc",
+            "histogram.num_occurrences as num_occurrences",
             "histogram.ratio as ratio")
 
         histogram_kdf = histogram_sdf.to_koalas()
+        histogram_pdf=histogram_kdf.to_pandas()
 
         summary_stats_sdf = profiled_df.drop("histogram")
         summary_stats_kdf = summary_stats_sdf.to_koalas()
 
-        return html.Div([
-            html.H2("Displaying summaryStats"),
+        after_analysis_container = [
+            dcc.Store(id='resultStore', data=histogram_pdf.to_dict('records')),
             html.Br(),
-            dash_table.DataTable(
-                data=summary_stats_kdf.to_dict('records'),
-                columns=[{'name': i, 'id': i} for i in summary_stats_kdf.columns]
-            ),
-            html.H2("Displaying histogram data"),
+            dcc.Dropdown(id='columnsDropdown', options=[
+                {'value': x, 'label': x} for x in set(histogram_pdf['column_name'])
+            ], multi=True, value=[], disabled=False),
+            dcc.Store(id='colsPrevSelected', data=[]),
             html.Br(),
-            dash_table.DataTable(
-                data=histogram_kdf.to_dict('records'),
-                columns=[{'name': i, 'id': i} for i in histogram_kdf.columns]
-            ),
-        ])
+            html.Div(id="myGraphCollections", children=[]),
+        ]
+        return after_analysis_container
+
+'''
+Create callbacks for the analysis bit
+'''
+
+
+@app.callback([Output('myGraphCollections', 'children'),
+              Output('colsPrevSelected', 'data')],
+              [Input('resultStore', 'data'),
+              Input('columnsDropdown', 'value')],
+              [State('colsPrevSelected', 'data'),
+              State('myGraphCollections', 'children')],
+              prevent_initial_call=True
+              )
+def on_data_set_graph(data_store, col_selected, cols_prev_selected, graphs_prev_displayed):
+    if col_selected is None:
+        raise PreventUpdate
+    new_col = np.setdiff1d(col_selected, cols_prev_selected)
+
+    if new_col.size > 0:
+        new_graph=create_dynamic_card(data_store, new_col.tolist()[0])
+        graphs_prev_displayed.insert(0, new_graph)
+        return graphs_prev_displayed, col_selected
+    else:
+        col_selected.reverse()
+        graphs = [create_dynamic_card(data_store, col) for col in col_selected]
+        return graphs, col_selected
+
+
+'''
+Creating Dynamic components based on the column selection. This call back will occur
+'''
+@app.callback(
+    [
+        Output(component_id={'type': 'dynPieChart', 'index': MATCH}, component_property='figure'),
+        Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='columns'),
+        Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='data'),
+        Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='style_data_conditional'),
+        ],
+    Input(component_id={'type': 'dynStore', 'index': MATCH}, component_property='data'),
+)
+def on_data_set_dyn_graph(col_data_store):
+    fig_pie = px.pie(
+        col_data_store,
+        names="value",
+        values="ratio",
+        color="value",
+        hole=0.7,
+    )
+    columns = [{"name": i, "id": i} for i in col_data_store[0].keys()]
+    data = col_data_store
+    # Conditional styling for the data table
+    style_data_conditional=[
+        {
+            'if': {
+                'column_id': 'column_name',
+            },
+            'hidden': 'True',
+            'color': 'white'
+        }
+    ]
+    return fig_pie, columns, data, style_data_conditional
 
 
 if __name__ == '__main__':
