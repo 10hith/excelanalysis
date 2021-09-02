@@ -64,6 +64,11 @@ Running docker images:
 docker run --name postgres-docker -e POSTGRES_PASSWORD=example123 -p 5432:5432 -d postgres:latest
 with this, username and dbname is postgres
 
+git filter-branch --index-filter -f 'git rm --cached --ignore-unmatch resources/deutils.jar' HEAD
+git filter-repo --invert-paths --path filename
+# Removing a big file from git
+git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch resources/deutils.jar" HEAD
+
 
 # ToDo
 Move column rename to pandas
