@@ -26,7 +26,7 @@ app = dash.Dash(
     meta_tags=[
         {"name": "viewport", "content": "width=device-width, initial-scale=1"}
     ],
-    requests_pathname_prefix="/new_upload/"
+    requests_pathname_prefix="/upload/"
 )
 
 app.layout = dbc.Container([
