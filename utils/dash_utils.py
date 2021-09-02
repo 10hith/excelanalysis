@@ -87,27 +87,27 @@ def create_dynamic_card(data_store: List[Dict], column_name: str) -> dbc.Card:
     card = dbc.Card([
         html.H4(f"Distribution for Column - '{column_name}' ", className="card-title"),
         html.H6(f"Viz generated @ {datetime.now()}", className="card-subtitle"),
-        # dbc.Row([
-        #     dbc.Col([
-        #         html.Div(id={
-        #             'type': 'dummyDiv',
-        #             'index': column_name
-        #         }, children=[]),
-        #         dbc.Button(
-        #             id={
-        #                 'type': 'scrollTop',
-        #                 'index': column_name
-        #             }, children="Scroll to top", n_clicks=0, className="btn-close btn btn-success"),
-        #         dbc.Button(
-        #             id={
-        #                 'type': 'closeBtn',
-        #                 'index': column_name
-        #             }, children="X", n_clicks=0, className="btn-close btn btn-danger"),
-        #     ],
-        #         width={"size": 3, "order": "last"},
-        #         align="end"
-        #     ),
-        # ], justify="end"),
+        dbc.Row([
+            dbc.Col([
+                html.Div(id={
+                    'type': 'dummyDiv',
+                    'index': column_name
+                }, children=[]),
+                dbc.Button(
+                    id={
+                        'type': 'scrollTop',
+                        'index': column_name
+                    }, children="Scroll to top", n_clicks=0, className="btn-close btn btn-success"),
+                dbc.Button(
+                    id={
+                        'type': 'closeBtn',
+                        'index': column_name
+                    }, children="X", n_clicks=0, className="btn-close btn btn-danger"),
+            ],
+                width={"size": 3, "order": "last"},
+                align="end"
+            ),
+        ], justify="end"),
         dbc.CardHeader(
             dbc.Tabs(
                 [

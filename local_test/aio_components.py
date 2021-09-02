@@ -104,3 +104,4 @@ class MarkdownWithColorAIO(html.Div):  # html.Div will be the "parent" component
         new_dd_options = drop_down_options
         new_dd_options.append({'label': "I added this Red", 'value': "red"})
         return new_dd_options
+

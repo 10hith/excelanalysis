@@ -1,7 +1,7 @@
 import uuid
 
 import dash
-from dash import dcc, html, Input, Output, State, MATCH, dash_table
+from dash import dcc, html, Input, Output, State, MATCH, dash_table, ALL, ALLSMALLER
 import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
 import plotly_express as px
@@ -15,6 +15,7 @@ from utils.deutils import run_profile
 from utils.dash_utils import read_upload_into_pdf, read_upload_into_kdf, create_dynamic_card, row_col
 from utils.spark_utils import SPARK_NUM_PARTITIONS, SPARK as spark
 from utils.params import HOST
+import visdcc
 
 
 app = dash.Dash(
@@ -32,6 +33,8 @@ app.layout = dbc.Container([
     dbc.Row([
         html.Br()
     ]),
+    visdcc.Run_js(id = 'jsScrollDDSelect'),
+    visdcc.Run_js(id = 'jsScrollProfileResult'),
     dbc.Row([
         dbc.Col([
                 dcc.Upload(
@@ -61,15 +64,6 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(html.Br())
     ]),
-    dbc.Row([
-        dbc.Col([
-            html.Footer([
-                dbc.Button(id='scrollTopStatic', children="Go to top", n_clicks=0, className="btn-close btn btn-success"),
-                ]),
-            ], width={"size": 3, "order": "last"},
-                align="end"
-        )
-        ]),
     dbc.Row([
         dbc.Col(html.Br())
     ]),
@@ -235,6 +229,8 @@ def start_profile(n_clicks, upload_content, upload_filename):
                     ),
                 ]),
             ]),
+            row_col([html.Br()]),
+            row_col([html.Br()]),
             dbc.Row([
                 dbc.Col([
                     html.H3(f"Select a column from the drop down to see the value distribution"),
@@ -321,36 +317,16 @@ def on_data_set_dyn_graph(col_data_store):
     ]
     return fig_pie, columns, data, style_data_conditional
 
-# Call back to scroll to the top of the page using clientside callback; Not Working
-# app.clientside_callback(
-#     """
-#     function(clicks) {
-#         if (clicks > 0) {
-#             window.scrollTo(0,0)
-#         }
-#         return ""
-#     }
-#     """,
-#     Output(component_id={'type':'dummyDivPreDef', 'index': MATCH}, component_property='children'),
-#     # Output(component_id='dummyDivPreDef', component_property='children'),
-#     Input(component_id={'type': 'scrollTop', 'index': MATCH}, component_property='n_clicks'),
-#     prevent_initial_call=True
-# )
 
-
-app.clientside_callback(
-    """
-    function(clicks) {
-        if (clicks > 0) {
-            window.scrollTo(0,0)
-        }
-        return ""
-    }
-    """,
-    Output(component_id='dummyDivPreDef', component_property='children'),
-    Input(component_id='scrollTopStatic', component_property='n_clicks'),
+@app.callback(
+    Output('jsScrollDDSelect', 'run'),
+    Input(component_id={'type': 'scrollTop', 'index': ALL}, component_property='n_clicks'),
     prevent_initial_call=True
 )
+def myfun(x):
+    if x:
+        return "window.scrollTo(0,600)"
+    return ""
 
 
 if __name__ == '__main__':
