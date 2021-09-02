@@ -8,13 +8,23 @@ from dash import dcc, html, dash_table
 import dash_bootstrap_components as dbc
 import plotly_express as px
 
+from utils.spark_utils import cleanup_col_name
 
-def read_upload_into_pdf(list_of_contents, list_of_names) -> pd.DataFrame:
+
+def row_col(list_of_components: List) -> dbc.Row:
+    return dbc.Row([
+        dbc.Col(
+            list_of_components
+        )
+    ])
+
+
+def read_upload_into_pdf(list_of_contents, list_of_names, num_sample_records=None) -> pd.DataFrame:
     """
     Parsing the file
     :param list_of_contents:
     :param list_of_names:
-    :param date:
+    :param num_sample_records:
     :return: Returns a html div
     """
     content_type, content_string = list_of_contents.split(',')
@@ -23,11 +33,15 @@ def read_upload_into_pdf(list_of_contents, list_of_names) -> pd.DataFrame:
     if 'csv' in list_of_names:
         # Assume that the user uploaded a CSV file
         df: pd.DataFrame = pd.read_csv(
-            io.StringIO(decoded.decode('utf-8')))
+            io.StringIO(decoded.decode('utf-8')), nrows=num_sample_records)
     elif 'xls' in list_of_names:
         # Assume that the user uploaded an excel file
-        df: pd.DataFrame = pd.read_excel(io.BytesIO(decoded))
+        df: pd.DataFrame = pd.read_excel(io.BytesIO(decoded), nrows=num_sample_records)
 
+    # Cleanup column names
+    cols = df.columns
+    col_rename_list = [cleanup_col_name(col) for col in cols]
+    df.rename(columns=dict(col_rename_list), inplace=True)
     return df
 
 
@@ -73,6 +87,27 @@ def create_dynamic_card(data_store: List[Dict], column_name: str) -> dbc.Card:
     card = dbc.Card([
         html.H4(f"Distribution for Column - '{column_name}' ", className="card-title"),
         html.H6(f"Viz generated @ {datetime.now()}", className="card-subtitle"),
+        # dbc.Row([
+        #     dbc.Col([
+        #         html.Div(id={
+        #             'type': 'dummyDiv',
+        #             'index': column_name
+        #         }, children=[]),
+        #         dbc.Button(
+        #             id={
+        #                 'type': 'scrollTop',
+        #                 'index': column_name
+        #             }, children="Scroll to top", n_clicks=0, className="btn-close btn btn-success"),
+        #         dbc.Button(
+        #             id={
+        #                 'type': 'closeBtn',
+        #                 'index': column_name
+        #             }, children="X", n_clicks=0, className="btn-close btn btn-danger"),
+        #     ],
+        #         width={"size": 3, "order": "last"},
+        #         align="end"
+        #     ),
+        # ], justify="end"),
         dbc.CardHeader(
             dbc.Tabs(
                 [
@@ -118,8 +153,6 @@ def create_dynamic_card(data_store: List[Dict], column_name: str) -> dbc.Card:
                                     'type': 'dynDataTable',
                                     'index': column_name
                                 },
-                                # columns=[{"name": i, "id": i} for i in col_data_store[0].keys()],
-                                # data=col_data_store,
                             )
                         ],
 

@@ -34,6 +34,8 @@ Restart-Service LxssManager
  sudo apt-get install git-lfs
  git lfs install
 
+uvicorn fast_upload:app --host "172.30.69.237" --reload
+
 ''' Docker commands '''
 docker run -p 80:80 -d --name eapp eapp:latest
 docker build -t excelanalysis .
@@ -41,6 +43,16 @@ docker login -u 10hith https://index.docker.io/v1/
 docker push 10hith/excelanalysis
 docker login -u 10hith -p "PSWD" https://index.docker.io/v1/
 C:\Users\lohith\.docker; config.json - below
+docker system prune when you have exit code 100, to reclaim space;
+And then use No cache?? lets see if this works;
+Restarting the machine - worked
+alias runeapp="docker run -p 80:80 -p 4040:4040 eapp3"
+alias buildeapp="cd /home/basal/excelanalysis && docker build -t eapp3 ."
+
+9.362682899999527 seconds; Number of spark partitions is 12
+11.480046699999548 seconds; Number of spark partitions is 200
+
+
 {"auths":{"docker.io":{"auth":"asjkldflasjdfSomeThing","email":"lohith.uvce@gmail.com"}},"credsStore":"desktop","currentContext":"default"}
 
 '''Installing Postgres12 on ubuntu'
@@ -51,3 +63,21 @@ Tutorial
 Running docker images:
 docker run --name postgres-docker -e POSTGRES_PASSWORD=example123 -p 5432:5432 -d postgres:latest
 with this, username and dbname is postgres
+
+
+# ToDo
+Move column rename to pandas
+Tooltip and Conditional formatting for datatable
+Datatable size
+Viewport for mobile devices
+Adding a close button on dbc.cards (https://community.plotly.com/t/updating-a-dropdown-menus-contents-dynamically/4920/3)
+
+
+In the callback for output(s):
+  dummyDivPreDef.children
+Input 0 ({"index":MATCH,"type":"scrollTop"}.n_clicks)
+has MATCH or ALLSMALLER on key(s) index
+where Output 0 (dummyDivPreDef.children)
+does not have a MATCH wildcard. Inputs and State do not
+need every MATCH from the Output(s), but they cannot have
+extras beyond the Output(s).

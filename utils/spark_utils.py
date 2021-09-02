@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 import json
 from pathlib import Path
 from pyspark.sql import DataFrame
-
+import re
 
 
 def get_project_root() -> Path:
@@ -10,13 +10,15 @@ def get_project_root() -> Path:
 
 
 PROJECT_ROOT = get_project_root()
+SPARK_NUM_PARTITIONS = 8
 
-DEUTILS_PATH = str(PROJECT_ROOT) + "/resources/deutils.jar"
+DEUTILS_PATH = str(PROJECT_ROOT) + "/resources/DqProfiler-1.0-SNAPSHOT-jar-with-dependencies.jar"
 
 
 def get_local_spark_session(app_name: str = "SparkTest"):
     """
     Creates a local spark session.
+            # .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
     Need to add more configuration
     :param app_name:
     :return:
@@ -24,10 +26,12 @@ def get_local_spark_session(app_name: str = "SparkTest"):
     spark = SparkSession \
         .builder \
         .appName(f"{app_name}") \
-        .config("spark.some.config.option", "some-value") \
         .config('spark.jars', f'{DEUTILS_PATH}') \
         .getOrCreate()
     return spark
+
+
+SPARK = get_local_spark_session(app_name="Upload Application")
 
 
 def get_spark_conf_as_json(spark: SparkSession) -> json:
@@ -55,10 +59,11 @@ def transform(self, f):
 DataFrame.transform = transform
 
 
-def cleanup_col_name(col_name):
-    str_w_space = ' '.join(col_name.split())
-    str_w_underscore = str_w_space.replace(' ', '_' )
-    return (col_name, str_w_underscore.lower())
+def cleanup_col_name(col_name: str):
+    str_no_special_chars = re.sub(r"[^a-zA-Z0-9]+", ' ', col_name)
+    str_w_single_space = ' '.join(str_no_special_chars.split())
+    str_w_underscore = str_w_single_space.replace(' ', '_' )
+    return col_name, str_w_underscore.lower()
 
 
 def build_select_expr(cols_map):
@@ -81,3 +86,7 @@ def with_std_column_names():
         return df.selectExpr(select_expr)
 
     return inner
+
+
+
+

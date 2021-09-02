@@ -1,18 +1,19 @@
 from fastapi import FastAPI
 from dash_apps.upload_component_withGraph import app as app_upload
+from dash_apps.upload_component import app as new_app_upload
 from fastapi.middleware.wsgi import WSGIMiddleware
+import uvicorn as uvicorn
 
-from utils.spark_utils import get_local_spark_session, get_spark_conf_as_json
+from utils.spark_utils import get_local_spark_session, get_spark_conf_as_json, SPARK as spark
+from utils.params import HOST
 
 app = FastAPI()
 
-spark = get_local_spark_session(app_name="default session")
 
-
-@app.on_event("startup")
-async def startup_event():
-    spark = get_local_spark_session(app_name="fastApi Startup")
-    return spark
+# @app.on_event("startup")
+# async def startup_event():
+#     spark = get_local_spark_session(app_name="fastApi Startup")
+#     return spark
 
 
 @app.on_event("shutdown")
@@ -27,3 +28,8 @@ def read_main():
 
 
 app.mount("/upload", WSGIMiddleware(app_upload.server))
+
+app.mount("/new_upload", WSGIMiddleware(new_app_upload.server))
+
+if __name__ == '__main__':
+    uvicorn.run("main:app", host=HOST, port=8000, reload=True)

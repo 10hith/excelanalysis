@@ -18,11 +18,11 @@ RUN apt-get update --yes && \
 
 # Spark Installation
 WORKDIR /tmp
-RUN wget https://archive.apache.org/dist/spark/spark-3.0.3/spark-3.0.3-bin-hadoop2.7.tgz && \
-    tar xzf spark-3.0.3-bin-hadoop2.7.tgz -C /opt && \
-    rm spark-3.0.3-bin-hadoop2.7.tgz
+RUN wget https://archive.apache.org/dist/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz && \
+    tar xzf spark-3.1.2-bin-hadoop3.2.tgz -C /opt && \
+    rm spark-3.1.2-bin-hadoop3.2.tgz
 
-ENV SPARK_HOME=/opt/spark-3.0.3-bin-hadoop2.7
+ENV SPARK_HOME=/opt/spark-3.1.2-bin-hadoop3.2
 
 # Configure Spark
 ENV SPARK_OPTS="--driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info" \
