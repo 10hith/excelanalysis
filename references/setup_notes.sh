@@ -49,9 +49,6 @@ Restarting the machine - worked
 alias runeapp="docker run -p 80:80 -p 4040:4040 eapp3"
 alias buildeapp="cd /home/basal/excelanalysis && docker build -t eapp3 ."
 
-9.362682899999527 seconds; Number of spark partitions is 12
-11.480046699999548 seconds; Number of spark partitions is 200
-
 
 {"auths":{"docker.io":{"auth":"asjkldflasjdfSomeThing","email":"lohith.uvce@gmail.com"}},"credsStore":"desktop","currentContext":"default"}
 
@@ -69,10 +66,15 @@ git filter-repo --invert-paths --path filename
 # Removing a big file from git
 git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch resources/deutils.jar" HEAD
 
-
+docker run -p 80:80 -e WORKERS_PER_CORE="0.5" eapp
 # ToDo
-Move column rename to pandas
-Tooltip and Conditional formatting for datatable
+remove metatags in dash
+Disable the start analysis button, rename it to StartProfiling
+Try adding the spark create within "on startup"
+Remove scrolling while outputting the profile results
+
+
+Tooltip and Conditional formatting for datatable - in progress
 Datatable size
 Viewport for mobile devices
 Adding a close button on dbc.cards (https://community.plotly.com/t/updating-a-dropdown-menus-contents-dynamically/4920/3)

@@ -26,12 +26,13 @@ def get_local_spark_session(app_name: str = "SparkTest"):
     spark = SparkSession \
         .builder \
         .appName(f"{app_name}") \
+        .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
         .config('spark.jars', f'{DEUTILS_PATH}') \
         .getOrCreate()
     return spark
 
 
-SPARK = get_local_spark_session(app_name="Upload Application")
+spark = get_local_spark_session(app_name="Upload Application")
 
 
 def get_spark_conf_as_json(spark: SparkSession) -> json:

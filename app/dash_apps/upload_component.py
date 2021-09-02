@@ -13,7 +13,7 @@ import numpy as np
 from utils.spark_utils import get_local_spark_session, with_std_column_names
 from utils.deutils import run_profile
 from utils.dash_utils import read_upload_into_pdf, read_upload_into_kdf, create_dynamic_card, row_col
-from utils.spark_utils import SPARK_NUM_PARTITIONS, SPARK as spark
+from utils.spark_utils import SPARK_NUM_PARTITIONS, spark
 from utils.params import HOST
 import visdcc
 
@@ -34,7 +34,6 @@ app.layout = dbc.Container([
         html.Br()
     ]),
     visdcc.Run_js(id = 'jsScrollDDSelect'),
-    visdcc.Run_js(id = 'jsScrollProfileResult'),
     dbc.Row([
         dbc.Col([
                 dcc.Upload(
