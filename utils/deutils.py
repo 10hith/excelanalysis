@@ -59,7 +59,7 @@ def run_profile(spark: SparkSession, df: DataFrame) -> DataFrame:
     Returns:
         Profiled DataFrame for all columns
     """
-    _run_profile = spark._jvm.ProfileHelpers.runProfileWideDf
+    _run_profile = spark._jvm.ProfileHelpers.runProfile
     jdf = _run_profile(df._jdf)
     return create_df_from_jdf(jdf, spark)
 

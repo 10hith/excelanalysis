@@ -1,5 +1,3 @@
-import uuid
-
 import dash
 from dash import dcc, html, Input, Output, State, MATCH, dash_table, ALL, ALLSMALLER
 import dash_bootstrap_components as dbc
@@ -9,10 +7,10 @@ import timeit
 from databricks import koalas as ks
 from pyspark.sql import functions as f
 import numpy as np
+import ast
 
-from utils.spark_utils import get_local_spark_session, with_std_column_names
 from utils.deutils import run_profile
-from utils.dash_utils import read_upload_into_pdf, read_upload_into_kdf, create_dynamic_card, row_col
+from utils.dash_utils import read_upload_into_pdf, create_dynamic_card, row_col
 from utils.spark_utils import SPARK_NUM_PARTITIONS, spark
 from utils.params import HOST
 import visdcc
@@ -23,9 +21,9 @@ app = dash.Dash(
     title = "Excel-Analysis",
     external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
-    meta_tags=[
-        {"name": "viewport", "content": "width=device-width, initial-scale=1"}
-    ],
+    # meta_tags=[
+    #     {"name": "viewport", "content": "width=device-width, initial-scale=1"}
+    # ],
     requests_pathname_prefix="/upload/"
 )
 
@@ -55,8 +53,8 @@ app.layout = dbc.Container([
     dcc.Store(id='profileResultStore', data=[]),
     dcc.Store(id='profileSummaryResultStore', data=[]),
     dcc.Loading(html.Div(id='dummyDivForLoadingState', children=[])),
-    dbc.Container(id='displayProfileAnalysisActions',children=[]),
-    html.Div(id='dummyDivPreDef',children=[]),
+    dbc.Container(id='displayProfileAnalysisActions', children=[]),
+    html.Div(id='dummyDivPreDef', children=[]),
     dbc.Row([
         dbc.Col(html.Br())
     ]),
@@ -70,6 +68,10 @@ app.layout = dbc.Container([
         dbc.Col(html.Br())
     ]),
 ])
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Uploading the sample
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
 @app.callback(Output('uploadSampleStore', 'data'),
@@ -127,12 +129,28 @@ def on_data_display_sample(upload_sample_store, upload_file_name):
         html.Br(),
         dbc.Row([
             dbc.Col([
-                html.Button("Start Analysis", id="startAnalysis", n_clicks=0, className="btn-primary"),
+                html.Button("Start Data Profile", id="startAnalysis", n_clicks=0, className="btn-primary"),
                 ]),
             ]),
         html.Br()
         ])
     return display_sample_div
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Run Profiling
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+@app.callback(Output('startAnalysis', 'disabled'),
+              Output('startAnalysis', 'style'),
+              Input('startAnalysis', 'n_clicks'),
+              prevent_initial_call=True
+              )
+def disable_start_button(n_clicks):
+    if n_clicks>=1:
+        return True, dict(display='none')
+    return False, dict()
 
 
 @app.callback([Output('displayProfileAnalysisActions', 'children'),
@@ -162,7 +180,7 @@ def start_profile(n_clicks, upload_content, upload_filename):
         kdf = ks.from_pandas(pdf)
         sdf = kdf.to_spark()
 
-        profiled_sdf = run_profile(spark, sdf.repartition(8))
+        profiled_sdf = run_profile(spark, sdf.repartition(SPARK_NUM_PARTITIONS))
 
         histogram_sdf = profiled_sdf.\
             select(
@@ -174,12 +192,10 @@ def start_profile(n_clicks, upload_content, upload_filename):
             "histogram.num_occurrences as num_occurrences",
             "histogram.ratio as ratio")
 
-        histogram_kdf = histogram_sdf.to_koalas()
-        histogram_pdf = histogram_kdf.to_pandas()
-
         summary_stats_sdf = profiled_sdf.drop("histogram")
-        summary_stats_kdf = summary_stats_sdf.to_koalas()
-        summary_stats_pdf = summary_stats_kdf.to_pandas()
+
+        summary_stats_pdf = summary_stats_sdf.toPandas()
+        histogram_pdf = histogram_sdf.toPandas()
 
         # Capturing end time
         stop = timeit.default_timer()
@@ -188,7 +204,7 @@ def start_profile(n_clicks, upload_content, upload_filename):
         profile_analysis_container = [
             dcc.Store(id='profileResultStore', data=histogram_pdf.to_dict('records')),
             dcc.Store(id='profileSummaryResultStore', data=summary_stats_pdf.to_dict('records')),
-            dcc.Store(id='colsPrevSelected', data=[]),
+            dcc.Store(id='colsPrevSelectedStore', data=[]),
             dbc.Row([
                 dbc.Col([
                     html.Br(),
@@ -252,24 +268,31 @@ def start_profile(n_clicks, upload_content, upload_filename):
         return profile_analysis_container, []
     raise PreventUpdate
 
-'''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Create callbacks for the profiling
-'''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
-@app.callback([Output('myGraphCollections', 'children'),
-              Output('colsPrevSelected', 'data')],
+@app.callback(Output('myGraphCollections', 'children'),
+              Output('colsPrevSelectedStore', 'data'),
               inputs=dict(
                   profile_result_store = Input('profileResultStore', 'data'),
                   col_selected = Input('columnsDropdown', 'value'),
-                  cols_prev_selected = State('colsPrevSelected', 'data'),
+                  cols_prev_selected = State('colsPrevSelectedStore', 'data'),
                   graphs_prev_displayed = State('myGraphCollections', 'children')
               ),
               prevent_initial_call=True
               )
-def on_profile_result_set_graph(profile_result_store, col_selected, cols_prev_selected, graphs_prev_displayed):
-    if col_selected is None:
-        raise PreventUpdate
+def on_profile_result_set_graph(
+        profile_result_store,
+        col_selected,
+        cols_prev_selected,
+        graphs_prev_displayed
+):
+    # if col_selected is None:
+    #     raise PreventUpdate
+
     new_col = np.setdiff1d(col_selected, cols_prev_selected)
 
     if new_col.size > 0:
@@ -322,11 +345,43 @@ def on_data_set_dyn_graph(col_data_store):
     Input(component_id={'type': 'scrollTop', 'index': ALL}, component_property='n_clicks'),
     prevent_initial_call=True
 )
-def myfun(x):
-    if x:
+def scroll_to_top(x):
+    # Unpack the click context to extract the column name and num_clicks
+    ctx = dash.callback_context
+    component = ctx.triggered[0]['prop_id']
+    component_key_dict = ast.literal_eval(component.split('.')[0])
+    num_click = ctx.inputs[component]
+    column_removed = component_key_dict['index']
+
+    if num_click>=1:
         return "window.scrollTo(0,600)"
     return ""
 
+# '''
+# Close button using click context
+# '''
+@app.callback(
+    Output('columnsDropdown', 'value'),
+    inputs = dict(
+        close_btn = Input(component_id={'type': 'closeBtn', 'index': ALL}, component_property='n_clicks'),
+        dropdown_values = State('columnsDropdown', 'value'),
+    ),
+    prevent_initial_call=True
+)
+def update_dropdown(close_btn, dropdown_values):
+    # Unpack the click context to extract the column name and num_clicks
+    ctx = dash.callback_context
+    component = ctx.triggered[0]['prop_id']
+    component_key_dict = ast.literal_eval(component.split('.')[0])
+    num_click = ctx.inputs[component]
+    column_removed = component_key_dict['index']
+
+    if num_click>=1 and len(component_key_dict)>0:
+        return [x for x in dropdown_values if column_removed not in x]
+        # return [x for x in dropdown_options if column_removed not in x['value']]
+
+    return dropdown_values
+
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8001, host=HOST)
+    app.run_server(debug=True, port=8002, host=HOST)

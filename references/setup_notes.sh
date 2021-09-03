@@ -67,13 +67,8 @@ git filter-repo --invert-paths --path filename
 git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch resources/deutils.jar" HEAD
 
 docker run -p 80:80 -e WORKERS_PER_CORE="0.5" eapp
+
 # ToDo
-remove metatags in dash
-Disable the start analysis button, rename it to StartProfiling
-Try adding the spark create within "on startup"
-Remove scrolling while outputting the profile results
-
-
 Tooltip and Conditional formatting for datatable - in progress
 Datatable size
 Viewport for mobile devices

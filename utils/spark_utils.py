@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from pyspark.sql import DataFrame
 import re
-
+import os
 
 def get_project_root() -> Path:
     return Path(__file__).parent.parent
@@ -15,10 +15,18 @@ SPARK_NUM_PARTITIONS = 8
 DEUTILS_PATH = str(PROJECT_ROOT) + "/resources/DqProfiler-1.0-SNAPSHOT-jar-with-dependencies.jar"
 
 
+os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
+
+
 def get_local_spark_session(app_name: str = "SparkTest"):
     """
     Creates a local spark session.
             # .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
+            spark.debug.maxToStringFields=100
+            spark.conf.set("spark.sql.debug.maxToStringFields", 100)
+        .config('spark.sql.execution.arrow.pyspark.enabled', True) \
+        .config('spark.sql.session.timeZone', 'UTC') \
+        .config('spark.driver.memory','32G') \
     Need to add more configuration
     :param app_name:
     :return:
@@ -28,6 +36,9 @@ def get_local_spark_session(app_name: str = "SparkTest"):
         .appName(f"{app_name}") \
         .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
         .config('spark.jars', f'{DEUTILS_PATH}') \
+        .config('spark.sql.session.timeZone', 'UTC') \
+        .config('spark.sql.execution.arrow.pyspark.enabled', True) \
+        .config('spark.debug.maxToStringFields', 100) \
         .getOrCreate()
     return spark
 
