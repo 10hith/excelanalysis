@@ -180,7 +180,7 @@ def start_profile(n_clicks, upload_content, upload_filename):
         kdf = ks.from_pandas(pdf)
         sdf = kdf.to_spark()
 
-        profiled_sdf = run_profile(spark, sdf.repartition(SPARK_NUM_PARTITIONS))
+        profiled_sdf = run_profile(spark, sdf)
 
         histogram_sdf = profiled_sdf.\
             select(

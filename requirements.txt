@@ -17,4 +17,5 @@ psycopg2-binary==2.9.1
 fastapi==0.68.1
 uvicorn==0.15.0
 python-multipart==0.0.5
-visdcc
+dash_extensions==0.0.60
+visdcc==0.0.40

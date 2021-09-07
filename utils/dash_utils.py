@@ -176,6 +176,6 @@ def create_dynamic_card(data_store: List[Dict], column_name: str) -> dbc.Card:
             ),
         ]
     )],
-    style={"width": "3"},
+    style={"width": "2"},
     )
     return card
