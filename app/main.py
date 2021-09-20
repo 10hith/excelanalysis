@@ -10,6 +10,7 @@ from dash_apps.upload_component_withGraph import app as app_new_upload
 from dash_apps.example1 import app as app_eg1
 from dash_apps.example2 import app as app_eg2
 
+
 app = FastAPI()
 
 

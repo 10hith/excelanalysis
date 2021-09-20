@@ -70,9 +70,13 @@ docker run -p 80:80 -e WORKERS_PER_CORE="0.5" eapp
 
 # ToDo
 Tooltip and Conditional formatting for datatable - in progress
-Datatable size
-Viewport for mobile devices
+datatable freeze panes within the columns
+Viewport for mobile devices - almost there, get the graphs width sorted
 Adding a close button on dbc.cards (https://community.plotly.com/t/updating-a-dropdown-menus-contents-dynamically/4920/3)
+
+
+# Reading json values returned from rest api call
+val jsonDF = sqlContext.read.schema(schema).json(vals)
 
 
 In the callback for output(s):

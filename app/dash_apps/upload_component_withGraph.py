@@ -23,10 +23,11 @@ app = dash.Dash(
     title = "Excel-Analysis",
     external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
+    update_title='Job Running...',
     # meta_tags=[
-    #     {"name": "viewport", "content": "width=device-width, initial-scale=1"}
+    #     {"name": "viewport", "content": "width=device-width, initial-scale=0.8"}
     # ],
-    requests_pathname_prefix="/new_upload/"
+    requests_pathname_prefix="/new_upload/",
 )
 
 # Lottie Setup
@@ -50,17 +51,17 @@ app.layout = dbc.Container([
                     'Drag and Drop or ',
                     html.A('Select Files')
                     ], className="display-4 mb-2 "),
-                max_size=15000000,
+                max_size=100000000,
             )
         ], className='mh-100 border border-primary text-center mb-2 text-primary'
-        , width={"size": 7, "offset": 2}
+        , width={'size':112}, md={'size': 8, "offset": 2}
         )
-    ]),
+    ], no_gutters=True),
     html.Br(),
     html.Div(id="lottie_div_parent",
         children =[ html.Div(
                 id='lottie_div', children=[
-                    de.Lottie(id="lottie", title="loading dataset", options=options, width="25%", height="25%", url=url,
+                    de.Lottie(id="lottie", title="loading dataset", options=options, width="30%", height="30%", url=url,
                               speed=1)],
                 style={'display': 'none'},
             ),]
@@ -151,7 +152,9 @@ def start_profile(upload_content, upload_file_name):
                 html.Br(),
                 html.H3(f"Analysis completed in {analysis_execution_time} seconds; \
                 Number of spark partitions is {SPARK_NUM_PARTITIONS}"),
-                ]),
+                ],
+                width={'size': 10}, md={'size': 8, "offset": 2}
+            ),
             ]),
         dbc.Row([
             dbc.Col([
@@ -183,14 +186,18 @@ def start_profile(upload_content, upload_file_name):
                     style_table={'height': 300},  # default is 500
                     style_header={'color': 'text-primary'}
                 ),
-            ]),
+            ],
+            width={'size': 10}, md={'size': 8, "offset": 2}
+            ),
         ]),
         row_col([html.Br()]),
         row_col([html.Br()]),
         dbc.Row([
             dbc.Col([
                 html.H3(f"Select a column from the drop down to see the value distribution"),
-                ])
+                ],
+                width={'size': 10}, md={'size': 8, "offset": 2}
+            )
             ]),
         dbc.Row([
             dbc.Col([
@@ -198,13 +205,17 @@ def start_profile(upload_content, upload_file_name):
                     {'value': x, 'label': x} for x in set(histogram_pdf['column_name'])
                 ], multi=True, value=[], disabled=False),
                 html.Br(),
-                ]),
-            ]),
+                ],
+                width={'size': 10}, md={'size': 8, "offset": 2}
+            ),
+            ], no_gutters=True),
         dbc.Row([
             dbc.Col([
                 html.Div(id="myGraphCollections", children=[]),
-                ])
-            ])
+                ],
+                width={'size': 10}, md={'size': 8, "offset": 2}
+            )
+            ], no_gutters=True)
         ]
     return profile_analysis_container, [], {'display': 'none'}
 
@@ -297,7 +308,10 @@ def scroll_to_top(x):
     # Unpack the click context to extract the column name and num_clicks
     ctx = dash.callback_context
     component = ctx.triggered[0]['prop_id']
-    component_key_dict = ast.literal_eval(component.split('.')[0])
+    if len(component)>0:
+        component_key_dict = ast.literal_eval(component.split('.')[0])
+    else:
+        component_key_dict={}
     num_click = ctx.inputs[component]
     column_removed = component_key_dict['index']
 

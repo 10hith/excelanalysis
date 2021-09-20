@@ -104,63 +104,67 @@ def create_dynamic_card(data_store: List[Dict], column_name: str) -> dbc.Card:
                         'index': column_name
                     }, children="X", n_clicks=0, className="btn-close btn btn-danger"),
             ],
-                width={"size": 3, "order": "last"},
+                width={"size": 5, "order": "last"}, md={"size": 3, "order": "last"},
                 align="end"
             ),
         ], justify="end"),
-        dbc.CardHeader(
-            dbc.Tabs(
-                [
-                    dbc.Tab(
-                        label="View Bar Chart",
-                        tab_id="tabBarChart",
-                        children=[
-                            html.Br(),
-                            html.H6(f"Viz generated @ {datetime.now()}", className="card-subtitle"),
-                            html.Br(),
-                            dcc.Graph(
-                            id={
-                                'type': 'dynBarChart',
-                                'index': column_name
-                            },
-                            figure=fig
-                            )
-                        ],
-                    ),
-                    dbc.Tab(
-                        label="View Pie Chart",
-                        tab_id="tabPieChart",
-                        children=[
-                            html.Br(),
-                            html.Br(),
-                            dcc.Graph(
-                                id={
-                                    'type': 'dynPieChart',
-                                    'index': column_name
-                                },
-                            )
-                        ],
+        dbc.Row([
+            dbc.Col([
+                dbc.CardHeader(
+                    dbc.Tabs(
+                        [
+                            dbc.Tab(
+                                label="View Bar Chart",
+                                tab_id="tabBarChart",
+                                children=[
+                                    html.Br(),
+                                    html.H6(f"Viz generated @ {datetime.now()}", className="card-subtitle"),
+                                    html.Br(),
+                                    dcc.Graph(
+                                    id={
+                                        'type': 'dynBarChart',
+                                        'index': column_name
+                                    },
+                                    figure=fig
+                                    )
+                                ],
+                            ),
+                            dbc.Tab(
+                                label="View Pie Chart",
+                                tab_id="tabPieChart",
+                                children=[
+                                    html.Br(),
+                                    html.Br(),
+                                    dcc.Graph(
+                                        id={
+                                            'type': 'dynPieChart',
+                                            'index': column_name
+                                        },
+                                    )
+                                ],
 
-                    ),
-                    dbc.Tab(
-                        label="View Data",
-                        tab_id="tabData",
-                        children=[
-                            html.Br(),
-                            html.Br(),
-                            dash_table.DataTable(
-                                id={
-                                    'type': 'dynDataTable',
-                                    'index': column_name
-                                },
-                            )
-                        ],
+                            ),
+                            dbc.Tab(
+                                label="View Data",
+                                tab_id="tabData",
+                                children=[
+                                    html.Br(),
+                                    html.Br(),
+                                    dash_table.DataTable(
+                                        id={
+                                            'type': 'dynDataTable',
+                                            'index': column_name
+                                        },
+                                    )
+                                ],
 
-                    ),
-                ],
-                active_tab="tabBarChart",
-            )
-        ),
+                            ),
+                        ],
+                        active_tab="tabBarChart",
+                    )
+                ),
+                ], )
+        ]),
         dbc.CardBody(
             id={
                 'type': 'dynCardBody',
