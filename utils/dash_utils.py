@@ -104,7 +104,7 @@ def create_dynamic_card(data_store: List[Dict], column_name: str) -> dbc.Card:
                         'index': column_name
                     }, children="X", n_clicks=0, className="btn-close btn btn-danger"),
             ],
-                width={"size": 5, "order": "last"}, md={"size": 3, "order": "last"},
+                width={"size": 3, "order": "last"}, md={"size": 3, "order": "last"},
                 align="end"
             ),
         ], justify="end"),

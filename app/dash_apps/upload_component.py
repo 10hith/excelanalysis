@@ -14,7 +14,7 @@ from utils.dash_utils import read_upload_into_pdf, create_dynamic_card, row_col
 from utils.spark_utils import SPARK_NUM_PARTITIONS, spark
 from utils.params import HOST
 import visdcc
-
+from utils.aio_components import CreateDynamicCard
 
 app = dash.Dash(
     __name__,
@@ -296,65 +296,69 @@ def on_profile_result_set_graph(
     new_col = np.setdiff1d(col_selected, cols_prev_selected)
 
     if new_col.size > 0:
-        new_graph=create_dynamic_card(profile_result_store, new_col.tolist()[0])
+        # new_graph=create_dynamic_card(profile_result_store, new_col.tolist()[0])
+        new_graph=CreateDynamicCard(profile_result_store, new_col.tolist()[0], aio_id=new_col.tolist()[0])
         graphs_prev_displayed.insert(0, new_graph)
         return graphs_prev_displayed, col_selected
     else:
         col_selected.reverse()
-        graphs = [create_dynamic_card(profile_result_store, col) for col in col_selected]
+        # graphs = [create_dynamic_card(profile_result_store, col) for col in col_selected]
+        graphs = [CreateDynamicCard(profile_result_store, col, aio_id=col) for col in col_selected]
         return graphs, col_selected
 
 
 '''
 Creating Dynamic components based on the column selection. This call back will occur
 '''
-@app.callback(
-    [
-        Output(component_id={'type': 'dynPieChart', 'index': MATCH}, component_property='figure'),
-        Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='columns'),
-        Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='data'),
-        Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='style_data_conditional'),
-        ],
-    Input(component_id={'type': 'dynStore', 'index': MATCH}, component_property='data'),
-)
-def on_data_set_dyn_graph(col_data_store):
-    fig_pie = px.pie(
-        col_data_store,
-        names="value",
-        values="ratio",
-        color="value",
-        hole=0.6,
-    )
-    columns = [{"name": i, "id": i} for i in col_data_store[0].keys()]
-    data = col_data_store
-    # Conditional styling for the data table
-    style_data_conditional=[
-        {
-            'if': {
-                'column_id': 'column_name',
-            },
-            'hidden': 'False',
-            'color': 'red'
-        }
-    ]
-    return fig_pie, columns, data, style_data_conditional
+# @app.callback(
+#     [
+#         Output(component_id={'type': 'dynPieChart', 'index': MATCH}, component_property='figure'),
+#         Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='columns'),
+#         Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='data'),
+#         Output(component_id={'type': 'dynDataTable', 'index': MATCH}, component_property='style_data_conditional'),
+#         ],
+#     Input(component_id={'type': 'dynStore', 'index': MATCH}, component_property='data'),
+# )
+# def on_data_set_dyn_graph(col_data_store):
+#     fig_pie = px.pie(
+#         col_data_store,
+#         names="value",
+#         values="ratio",
+#         color="value",
+#         hole=0.6,
+#     )
+#     columns = [{"name": i, "id": i} for i in col_data_store[0].keys()]
+#     data = col_data_store
+#     # Conditional styling for the data table
+#     style_data_conditional=[
+#         {
+#             'if': {
+#                 'column_id': 'column_name',
+#             },
+#             'hidden': 'False',
+#             'color': 'red'
+#         }
+#     ]
+#     return fig_pie, columns, data, style_data_conditional
 
 
 @app.callback(
     Output('jsScrollDDSelect', 'run'),
-    Input(component_id={'type': 'scrollTop', 'index': ALL}, component_property='n_clicks'),
-    prevent_initial_call=True
+    inputs = dict(
+        scroll_btn_click=Input(
+            component_id={'component': 'CreateDynamicCard', 'subcomponent': 'scrollTop', 'aio_id': ALL},
+            component_property='n_clicks')
+    ),
+         prevent_initial_call = True
 )
-def scroll_to_top(x):
-    # Unpack the click context to extract the column name and num_clicks
+def scroll_to_top(scroll_btn_click):
     ctx = dash.callback_context
-    component = ctx.triggered[0]['prop_id']
-    component_key_dict = ast.literal_eval(component.split('.')[0])
-    num_click = ctx.inputs[component]
-    column_removed = component_key_dict['index']
 
-    if num_click>=1:
-        return "window.scrollTo(0,600)"
+    if ctx.triggered[0]['value'] is None:
+        raise PreventUpdate
+
+    if ctx.triggered[0]['value'] >= 1:
+        return "window.scrollTo(0,0)"
     return ""
 
 # '''
@@ -363,22 +367,27 @@ def scroll_to_top(x):
 @app.callback(
     Output('columnsDropdown', 'value'),
     inputs = dict(
-        close_btn = Input(component_id={'type': 'closeBtn', 'index': ALL}, component_property='n_clicks'),
+        # close_btn = Input(component_id={'type': 'closeBtn', 'index': ALL}, component_property='n_clicks'),
+        close_btn_click = Input(
+            component_id={'component': 'CreateDynamicCard', 'subcomponent': 'closeBtn','aio_id': ALL},
+            component_property='n_clicks'),
         dropdown_values = State('columnsDropdown', 'value'),
     ),
     prevent_initial_call=True
 )
-def update_dropdown(close_btn, dropdown_values):
-    # Unpack the click context to extract the column name and num_clicks
+def update_dropdown(close_btn_click, dropdown_values):
+    # Capture the callback context state
     ctx = dash.callback_context
-    component = ctx.triggered[0]['prop_id']
-    component_key_dict = ast.literal_eval(component.split('.')[0])
-    num_click = ctx.inputs[component]
-    column_removed = component_key_dict['index']
 
-    if num_click>=1 and len(component_key_dict)>0:
+    if ctx.triggered[0]['value'] is None:
+        raise PreventUpdate
+
+    if ctx.triggered[0]['value']>=1:
+        ctx = dash.callback_context
+        component = ctx.triggered[0]['prop_id']
+        component_key_dict = ast.literal_eval(component.split('.')[0])
+        column_removed = component_key_dict['aio_id']
         return [x for x in dropdown_values if column_removed not in x]
-        # return [x for x in dropdown_options if column_removed not in x['value']]
 
     return dropdown_values
 
