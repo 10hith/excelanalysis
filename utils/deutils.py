@@ -6,7 +6,7 @@ from typing import List
 
 from py4j import java_gateway
 from py4j.java_gateway import JavaObject
-from pyspark.sql import DataFrame, SparkSession, SQLContext
+from pyspark.sql import DataFrame, SparkSession, SQLContext, functions as f
 
 
 # pylint: disable=protected-access
@@ -47,6 +47,13 @@ def to_scala_seq(jvm: java_gateway, iterable: List) -> JavaObject:
     return jvm.scala.collection.JavaConversions.iterableAsScalaIterable(
         iterable
     ).toSeq()
+
+#     sdf = sdf.withColumn("column_name_strip",
+#                          f.expr(f"CASE "
+#                                 f"WHEN LENGTH(column_name)>{length} "
+#                                 f"THEN CONCAT(SUBSTRING(column_name,1,{length}), '..')"
+#                                 f"ELSE column_name END")
+#                                 )
 
 
 def run_profile(spark: SparkSession, df: DataFrame) -> DataFrame:

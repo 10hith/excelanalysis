@@ -10,7 +10,7 @@ import numpy as np
 import ast
 
 from utils.deutils import run_profile
-from utils.dash_utils import read_upload_into_pdf, create_dynamic_card, row_col
+from utils.dash_utils import read_upload_into_pdf, row_col
 from utils.spark_utils import SPARK_NUM_PARTITIONS, spark
 from utils.params import HOST
 import visdcc
@@ -296,13 +296,11 @@ def on_profile_result_set_graph(
     new_col = np.setdiff1d(col_selected, cols_prev_selected)
 
     if new_col.size > 0:
-        # new_graph=create_dynamic_card(profile_result_store, new_col.tolist()[0])
         new_graph=CreateDynamicCard(profile_result_store, new_col.tolist()[0], aio_id=new_col.tolist()[0])
         graphs_prev_displayed.insert(0, new_graph)
         return graphs_prev_displayed, col_selected
     else:
         col_selected.reverse()
-        # graphs = [create_dynamic_card(profile_result_store, col) for col in col_selected]
         graphs = [CreateDynamicCard(profile_result_store, col, aio_id=col) for col in col_selected]
         return graphs, col_selected
 

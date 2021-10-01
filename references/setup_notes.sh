@@ -30,6 +30,9 @@ https://sparkbyexamples.com/spark/spark-setup-run-with-scala-intellij/
 # Restart WSL
 Restart-Service LxssManager
 
+'''Bootstrap cheatsheet'''
+https://hackerthemes.com/bootstrap-cheatsheet/
+
 # Configuring Git for large files
  sudo apt-get install git-lfs
  git lfs install

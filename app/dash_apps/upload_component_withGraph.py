@@ -1,4 +1,5 @@
 import dash
+import pandas as pd
 from dash import dcc, html, Input, Output, State, MATCH, dash_table, ALL, ALLSMALLER
 import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
@@ -10,24 +11,26 @@ import numpy as np
 import ast
 
 from utils.deutils import run_profile
-from utils.dash_utils import read_upload_into_pdf, create_dynamic_card, row_col
-from utils.spark_utils import SPARK_NUM_PARTITIONS, spark
+from utils.dash_utils import read_upload_into_pdf, row_col, get_summary_stats_datatable
+from utils.spark_utils import SPARK_NUM_PARTITIONS, spark, get_summary_and_histogram_dfs
 from utils.aio_components import CreateDynamicCard
 from utils.params import HOST
 import visdcc
 import dash_extensions as de
+from dash_extensions.snippets import send_bytes
 import time
 
+# COSMO, MINTY
 
 app = dash.Dash(
     __name__,
     title = "Excel-Analysis",
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.SLATE],
     suppress_callback_exceptions=True,
     update_title='Job Running...',
-    # meta_tags=[
-    #     {"name": "viewport", "content": "width=device-width, initial-scale=0.8"}
-    # ],
+    meta_tags=[
+        {"name": "viewport", "content": "width=device-width, initial-scale=0.8"}
+    ],
     requests_pathname_prefix="/new_upload/",
 )
 
@@ -120,25 +123,7 @@ def start_profile(upload_content, upload_file_name):
     if upload_content is None:
         return html.Div([]), []
 
-    kdf = ks.from_pandas(pdf)
-    sdf = kdf.to_spark()
-
-    profiled_sdf = run_profile(spark, sdf)
-
-    histogram_sdf = profiled_sdf.\
-        select(
-        "column_name",
-        f.explode("histogram").alias("histogram")
-    ).selectExpr(
-        "column_name",
-        "histogram.value as value",
-        "histogram.num_occurrences as num_occurrences",
-        "histogram.ratio as ratio")
-
-    summary_stats_sdf = profiled_sdf.drop("histogram")
-
-    summary_stats_pdf = summary_stats_sdf.toPandas()
-    histogram_pdf = histogram_sdf.toPandas()
+    summary_stats_pdf, histogram_pdf = get_summary_and_histogram_dfs(pdf)
 
     # Capturing end time
     stop = timeit.default_timer()
@@ -160,42 +145,26 @@ def start_profile(upload_content, upload_file_name):
         dbc.Row([
             dbc.Col([
                 html.Br(),
-                html.H3(f"Below is the summary stats for the dataframe"),
+                html.H3(f"Below is the summary stats for the dataframe", className="alert alert-primary"),
                 html.Br(),
-                dash_table.DataTable(id="profileSummary",
-                    data=summary_stats_pdf.to_dict("records"),
-                    columns=[{'name': i, 'id': i} for i in summary_stats_pdf.columns],
-                    virtualization=True,
-                    fixed_rows={'headers': True},
-                    style_data_conditional=[
-                        {
-                            'if': {
-                                'filter_query': '{completeness} > .98',
-                                'column_id': 'completeness'
-                            },
-                            'color': 'green',
-                            'fontWeight': 'bold'
-                        }, {
-                            'if': {
-                                'filter_query': '{column_type} = non_numeric',
-                            },
-                            'color': 'green',
-                            'fontWeight': 'bold'
-                        }
-                    ],
-                    style_cell={'minWidth': 95, 'width': 95, 'maxWidth': 95},
-                    style_table={'height': 300},  # default is 500
-                    style_header={'color': 'text-primary'}
+                dbc.Button(
+                    "Download Summary Stats",
+                    id="downloadSummaryStatsBtn",
+                    n_clicks=0,
+                    className="btn btn-info float-right btn-sm"
                 ),
+                html.Br(),
+                get_summary_stats_datatable(summary_stats_pdf),
+                de.Download(id='downloadSummaryStatsUtil'),
+                html.Br(),
             ],
             width={'size': 10}, md={'size': 8, "offset": 2}
             ),
         ]),
         row_col([html.Br()]),
-        row_col([html.Br()]),
         dbc.Row([
             dbc.Col([
-                html.H3(f"Select a column from the drop down to see the value distribution"),
+                html.H3(f"Select a column from the drop down to see the value distribution", className="alert alert-primary"),
                 ],
                 width={'size': 10}, md={'size': 8, "offset": 2}
             )
@@ -242,7 +211,8 @@ Create callbacks for the profiling
                   profile_result_store = Input('profileResultStore', 'data'),
                   col_selected = Input('columnsDropdown', 'value'),
                   cols_prev_selected = State('colsPrevSelectedStore', 'data'),
-                  graphs_prev_displayed = State('myGraphCollections', 'children')
+                  graphs_prev_displayed = State('myGraphCollections', 'children'),
+                  profile_summary_result_store = State('profileSummaryResultStore', 'data'),
               ),
               prevent_initial_call=True
               )
@@ -250,22 +220,19 @@ def on_profile_result_set_graph(
         profile_result_store,
         col_selected,
         cols_prev_selected,
-        graphs_prev_displayed
+        graphs_prev_displayed,
+        profile_summary_result_store
 ):
-    # if col_selected is None:
-    #     raise PreventUpdate
 
     new_col = np.setdiff1d(col_selected, cols_prev_selected)
 
     if new_col.size > 0:
-        # new_graph=create_dynamic_card(profile_result_store, new_col.tolist()[0])
-        new_graph=CreateDynamicCard(profile_result_store, new_col.tolist()[0], aio_id=new_col.tolist()[0])
+        new_graph=CreateDynamicCard(profile_result_store, profile_summary_result_store, new_col.tolist()[0], aio_id=new_col.tolist()[0])
         graphs_prev_displayed.insert(0, new_graph)
         return graphs_prev_displayed, col_selected
     else:
         col_selected.reverse()
-        # graphs = [create_dynamic_card(profile_result_store, col) for col in col_selected]
-        graphs = [CreateDynamicCard(profile_result_store, col, aio_id=col) for col in col_selected]
+        graphs = [CreateDynamicCard(profile_result_store, profile_summary_result_store, col, aio_id=col) for col in col_selected]
         return graphs, col_selected
 
 
@@ -320,5 +287,21 @@ def update_dropdown(close_btn_click, dropdown_values):
     return dropdown_values
 
 
+@app.callback(
+    Output('downloadSummaryStatsUtil', 'data'),
+    Input('downloadSummaryStatsBtn', 'n_clicks'),
+    State('profileSummaryResultStore', 'data'),
+    State('uploadData', 'filename'),
+    prevent_initial_call=True
+)
+def generate_summary_stats_xlsx(n_clicks, profile_summary_data, file_name):
+    def to_xlsx(bytes_io):
+        df = pd.DataFrame(profile_summary_data)
+        xslx_writer = pd.ExcelWriter(bytes_io, engine="xlsxwriter")
+        df.to_excel(xslx_writer, index=False, sheet_name="sheet1")
+        xslx_writer.save()
+    return send_bytes(to_xlsx, f"{file_name}_profile_summary.xlsx")
+
+
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8002, host=HOST)
+    app.run_server(debug=True, port=8003, host=HOST)

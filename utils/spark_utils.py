@@ -1,9 +1,15 @@
+import pandas as pd
 from pyspark.sql import SparkSession
+from databricks import koalas as ks
+from pyspark.sql import functions as f
+from utils.deutils import run_profile
+
 import json
 from pathlib import Path
 from pyspark.sql import DataFrame
 import re
 import os
+
 
 def get_project_root() -> Path:
     return Path(__file__).parent.parent
@@ -54,6 +60,33 @@ def get_spark_conf_as_json(spark: SparkSession) -> json:
     """
     configurations = spark.sparkContext.getConf().getAll()
     return json.dumps(dict(configurations))
+
+
+def get_summary_and_histogram_dfs(pdf: pd.DataFrame) -> (pd.DataFrame, pd.DataFrame):
+    kdf = ks.from_pandas(pdf)
+    sdf = kdf.to_spark()
+    profiled_sdf = run_profile(spark, sdf)
+
+    histogram_sdf = profiled_sdf.\
+        select(
+        "column_name",
+        f.explode("histogram").alias("histogram")
+    ).selectExpr(
+        "column_name",
+        f"CASE "
+        f"WHEN LENGTH(histogram.value)>{10} "
+        f"THEN CONCAT(SUBSTRING(histogram.value,1,{10}), '..')"
+        f"ELSE histogram.value END as value",
+        f"histogram.value as value_complete",
+        "histogram.num_occurrences as num_occurrences",
+        "histogram.ratio*100 as percentage")
+
+    summary_stats_sdf: spark.sql.DataFrame = profiled_sdf.drop("histogram")
+
+    summary_stats_pdf: pd.DataFrame = summary_stats_sdf.toPandas()
+    histogram_pdf: pd.DataFrame = histogram_sdf.toPandas()
+
+    return summary_stats_pdf, histogram_pdf
 
 
 def transform(self, f):
