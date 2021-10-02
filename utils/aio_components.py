@@ -9,7 +9,8 @@ import dash_extensions as de
 from dash_extensions.snippets import send_bytes
 import pandas as pd
 import plotly.graph_objects as go
-from utils.dash_utils import row_col
+from utils.dash_utils import get_std_badges, get_numeric_badges
+
 
 class CreateDynamicCard(html.Div):
     # A set of functions that create pattern-matching callbacks of the sub-components
@@ -67,14 +68,14 @@ class CreateDynamicCard(html.Div):
 
         fig.update_layout(
             title={
-                'text': f"Value Distribution - '{aio_id}'",
+                'text': f"{aio_id}",
                 'y': 0.95,
                 'x': 0.4,
                 'xanchor': 'center',
                 'yanchor': 'top'
             },
             # autosize=False,
-            title_font_color='#800000',
+            # title_font_color='secondary',
             xaxis_title="Percentage Of Records",
             yaxis_title="Categories Values",
             legend_title="Categories",
@@ -88,30 +89,8 @@ class CreateDynamicCard(html.Div):
 
         col_summary_stat = [x for x in summary_stats_store if x["column_name"] == column_name][0]
 
-        print(type(col_summary_stat))
-        print(f"num_distinct_values is {col_summary_stat['num_distinct_values']}")
-        print(f"completeness is {col_summary_stat['completeness']}")
-        print(f"column_type is {col_summary_stat['column_type']}")
-
-        tiles = [
-            dbc.Button(
-                ["approx unique values", dbc.Badge(f"{col_summary_stat['num_distinct_values']}", color="dark", className="ml-1")],
-                color="warning",
-                className="m-1 btn-sm"
-            ),
-            dbc.Button(
-                ["Nulls",
-                 dbc.Badge(f"{1 - int(col_summary_stat['completeness'])}%", color="dark", className="ml-1 text-secondary")],
-                color="danger",
-                className="m-1 btn-sm"
-            ),
-            dbc.Button(
-                ["Data Type",
-                 dbc.Badge(f"{col_summary_stat['column_type']}", color="danger", className="ml-1 text-dark")],
-                color="light",
-                className="m-1 btn-sm"
-            )
-            ]
+        std_badges = get_std_badges(col_summary_stat)
+        numeric_badges = get_numeric_badges(col_summary_stat)
 
 
         # Define the component's layout
@@ -138,7 +117,8 @@ class CreateDynamicCard(html.Div):
                 ),
                 dbc.Collapse(
                     dbc.Row([
-                        dbc.Col(tiles, width={"order": 1, "offset": 1}),
+                        dbc.Col(std_badges, width={"order": 1, "offset": 1}),
+                        dbc.Col(numeric_badges, width={"order": 2, "offset":1}),
                     ]),
                     id=self.ids.summaryTileCollapse(aio_id),
                     is_open=False
@@ -266,13 +246,13 @@ class CreateDynamicCard(html.Div):
 
         fig_pie.update_layout(
             title={
-                'text': f"Value Distribution - '{column_name}'",
+                'text': f"{column_name}",
                 'y': 0.95,
                 'x': 0.4,
                 'xanchor': 'center',
                 'yanchor': 'top'
             },
-            title_font_color='blue',
+            # title_font_color='primary',
             legend_title="Categories",
         )
 

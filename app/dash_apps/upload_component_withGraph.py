@@ -25,7 +25,7 @@ import time
 app = dash.Dash(
     __name__,
     title = "Excel-Analysis",
-    external_stylesheets=[dbc.themes.SLATE],
+    external_stylesheets=[dbc.themes.MINTY],
     suppress_callback_exceptions=True,
     update_title='Job Running...',
     meta_tags=[

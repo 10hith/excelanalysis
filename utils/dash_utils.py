@@ -116,7 +116,61 @@ def get_summary_stats_datatable(summary_stats_pdf: pd.DataFrame) -> dash_table.D
     return stats_data_table
 
 
+# def get_badge(col_summary_stat: Dict, metric: str) -> dbc.Button:
+#     return dbc.Button(
+#         [f"from function {metric}",
+#          dbc.Badge(f"{col_summary_stat['num_distinct_values']}",
+#                    color="dark", className="ml-1")],
+#         color="warning",
+#         className="m-1 btn-sm"
+#     )
 
+def get_numeric_badges(col_summary_stat: Dict) -> List[dbc.Button]:
+
+    if col_summary_stat['column_type'] == 'numeric':
+        return [
+            dbc.Button(
+                ["Max",
+                 dbc.Badge(f"{col_summary_stat['maximum']:.2f}", color="danger", className="ml-1 text-light")],
+                color="light",
+                className="m-1 btn-sm"
+            ),
+            dbc.Button(
+                ["Min",
+                 dbc.Badge(f"{col_summary_stat['minimum']:.2f}", color="danger", className="ml-1 text-light")],
+                color="light",
+                className="m-1 btn-sm"
+            ),
+            dbc.Button(
+                ["Mean",
+                 dbc.Badge(f"{col_summary_stat['mean']:.2f}", color="danger", className="ml-1 text-light")],
+                color="light",
+                className="m-1 btn-sm"
+            ),
+            dbc.Button(
+                ["stdDev",
+                 dbc.Badge(f"{col_summary_stat['stdDev']:.2f}", color="danger", className="ml-1 text-light")],
+                color="light",
+                className="m-1 btn-sm"
+            ),
+        ]
+    else:
+        return []
+
+
+def get_std_badges(col_summary_stat: Dict) -> List[dbc.Button]:
+    std_tiles = [dbc.Button(
+        ["Approx. unique count",
+         dbc.Badge(f"{col_summary_stat['num_distinct_values']}", color="danger", className="ml-1 text-light")],
+        color="light",
+        className="m-1 btn-sm"
+    ), dbc.Button(
+        ["% Nulls",
+         dbc.Badge(f"{1 - int(col_summary_stat['completeness'])}%", color="danger", className="ml-1 text-light")],
+        color="light",
+        className="m-1 btn-sm"
+    )]
+    return std_tiles
 
 # def get_bar_chart(col_data_store: List[Dict], aio_id: str):
 #     fig = px.bar(
