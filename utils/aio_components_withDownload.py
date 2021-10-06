@@ -24,6 +24,12 @@ class CreateDynamicCard(html.Div):
         dynDataTable = lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'dynDataTable', 'aio_id': aio_id}
         dataTablePh =  lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'dataTablePh', 'aio_id': aio_id}
         dynStore = lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'dynStore', 'aio_id': aio_id}
+        downloadDataButton = lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'downloadDataButton', 'aio_id': aio_id}
+        downloadDataUtil =  lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'downloadDataUtil', 'aio_id': aio_id}
+        downloadBarButton =  lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'downloadBarButton', 'aio_id': aio_id}
+        downloadBarUtil =  lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'downloadBarUtil', 'aio_id': aio_id}
+        downloadPieButton = lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'downloadPieButton', 'aio_id': aio_id}
+        downloadPieUtil = lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'downloadPieUtil', 'aio_id': aio_id}
         showSummaryTile =  lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'collapseBtn', 'aio_id': aio_id}
         summaryTileCollapse = lambda aio_id: {'component': 'CreateDynamicCard', 'subcomponent': 'collapseUtil', 'aio_id': aio_id}
 
@@ -75,6 +81,7 @@ class CreateDynamicCard(html.Div):
             legend_title="Categories",
             yaxis_automargin=True,
             yaxis_autorange=True,
+            # paper_bgcolor="LightSteelBlue",
         )
         #############################
         # Creating the summary tile
@@ -130,6 +137,18 @@ class CreateDynamicCard(html.Div):
                                         label="View Bar Chart",
                                         tab_id="tabBarChart",
                                         children=[
+                                            # dbc.Row([
+                                            #     dbc.Col([
+                                            #         dbc.Button(
+                                            #             "Download graph as Image",
+                                            #             id=self.ids.downloadBarButton(aio_id),
+                                            #             n_clicks=0
+                                            #             , className="btn btn-info float-right btn-sm"),
+                                            #         de.Download(id=self.ids.downloadBarUtil(aio_id)),
+                                            #         html.Br(),
+                                            #     ],
+                                            #     ),
+                                            # ]),
                                             dbc.Row([
                                                 dbc.Col([
                                                     dcc.Graph(id=self.ids.dynBarChart(aio_id),
@@ -147,6 +166,18 @@ class CreateDynamicCard(html.Div):
                                         label="View Pie Chart",
                                         tab_id="tabPieChart",
                                         children=[
+                                            # dbc.Row([
+                                            #     dbc.Col([
+                                            #         dbc.Button(
+                                            #             "Download graph as Image",
+                                            #             id=self.ids.downloadPieButton(aio_id),
+                                            #             n_clicks=0
+                                            #             , className="btn btn-info float-right btn-sm"),
+                                            #         de.Download(id=self.ids.downloadPieUtil(aio_id)),
+                                            #         html.Br(),
+                                            #     ],
+                                            #     ),
+                                            # ]),
                                             dbc.Row([
                                                 dbc.Col([
                                                     dcc.Graph(id=self.ids.dynPieChart(aio_id),
@@ -164,6 +195,18 @@ class CreateDynamicCard(html.Div):
                                         label="View Data",
                                         tab_id="tabData",
                                         children=[
+                                            # dbc.Row([
+                                            #     dbc.Col([
+                                            #         dbc.Button(
+                                            #             f"Download data as Excel",
+                                            #             id=self.ids.downloadDataButton(aio_id),
+                                            #             n_clicks=0
+                                            #             , className="btn btn-info float-right btn-sm"),
+                                            #         de.Download(id=self.ids.downloadDataUtil(aio_id)),
+                                            #         html.Br(),
+                                            #     ],
+                                            #     ),
+                                            # ]),
                                             dbc.Row([
                                                 dbc.Col([html.Div(id=self.ids.dataTablePh(aio_id), children=[])
                                                          ],
@@ -182,6 +225,8 @@ class CreateDynamicCard(html.Div):
                         dcc.Store(id=self.ids.dynStore(aio_id), data=col_data_store),
                     ]
                 )],
+                # style={"width": "2"},
+                # className="border border-3 border-primary"
             ),
             ])
 
@@ -213,6 +258,7 @@ class CreateDynamicCard(html.Div):
                 'xanchor': 'center',
                 'yanchor': 'top'
             },
+            # title_font_color='primary',
             legend_title="Categories",
         )
 
@@ -231,15 +277,59 @@ class CreateDynamicCard(html.Div):
             ],
             fixed_rows={'headers': True},
             style_cell={'minWidth': 25, 'width': 95, 'maxWidth': 95},
-            style_table={'height': 300,},  # default is 500
-            style_header={
-                'backgroundColor': '#7f7f7f',
-                'color': 'white',
-                'fontWeight': 'bold',
-            },
+            style_table={'height': 100,},  # default is 500
+            style_header={'color': 'blue'}
         )
 
         return fig_pie, dyn_data_table
+
+
+    # @callback(
+    #     Output(ids.downloadDataUtil(MATCH), "data"),
+    #     inputs=dict(
+    #         n_clicks=Input(ids.downloadDataButton(MATCH), "n_clicks"),
+    #         id=State(ids.downloadDataButton(MATCH), "id"),
+    #         column_data=State(ids.dynStore(MATCH), 'data'),
+    #     ),
+    #     prevent_initial_call=True
+    # )
+    # def generate_xlsx(n_clicks, id, column_data):
+    #     def to_xlsx(bytes_io):
+    #         df = pd.DataFrame(column_data)
+    #         xslx_writer = pd.ExcelWriter(bytes_io, engine="xlsxwriter")
+    #         df.to_excel(xslx_writer, index=False, sheet_name="sheet1")
+    #         xslx_writer.save()
+    #     column_name = id['aio_id']
+    #     return send_bytes(to_xlsx, f"{column_name}.xlsx")
+    #
+    # @callback(
+    #     Output(ids.downloadBarUtil(MATCH), "data"),
+    #     Input(ids.downloadBarButton(MATCH), "n_clicks"),
+    #     State(ids.downloadBarUtil(MATCH), "id"),
+    #     State(ids.dynBarChart(MATCH), 'figure'),
+    #     prevent_initial_call=True
+    # )
+    # def download_bar_png(n_nlicks, id, fig):
+    #
+    #     column_name = id['aio_id']
+    #     f = go.Figure(fig,
+    #                   # layout=go.Layout(title=go.layout.Title(text=f"Value ONLYGraphs Distribution - '{column_name}'"))
+    #                   layout=dict(title=dict(text="A Figure Specified By A Graph Object"))
+    #                   )
+    #     return send_bytes(f.write_image, f"{column_name}.png")
+    #
+    # @callback(
+    #     Output(ids.downloadPieUtil(MATCH), "data"),
+    #     Input(ids.downloadPieButton(MATCH), "n_clicks"),
+    #     State(ids.downloadPieButton(MATCH), "id"),
+    #     State(ids.dynPieChart(MATCH), 'figure'),
+    #     prevent_initial_call=True
+    # )
+    # def download_bar_png(n_nlicks, id, fig):
+    #     f=go.Figure(fig)
+    #     column_name = id['aio_id']
+    #     return send_bytes(f.write_image, f"{column_name}.png")
+
 
     @callback(
         Output(ids.summaryTileCollapse(MATCH), "is_open"),
@@ -251,6 +341,4 @@ class CreateDynamicCard(html.Div):
         if n:
             return not is_open
         return is_open
-
-
 
