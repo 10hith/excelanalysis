@@ -6,26 +6,24 @@ import timeit
 import numpy as np
 import ast
 
-from utils.deutils import run_profile
 from utils.dash_utils import read_upload_into_pdf, row_col, get_summary_stats_datatable
-from utils.spark_utils import SPARK_NUM_PARTITIONS, spark, get_summary_and_histogram_dfs
-from utils.aio_components import CreateDynamicCard
+from utils.spark_utils import SPARK_NUM_PARTITIONS, get_summary_and_histogram_dfs
+from utils.aio_components_withDownload import CreateDynamicCardDwnld
 from utils.params import HOST
 import visdcc
 import dash_extensions as de
-from dash_extensions.snippets import send_bytes
 import time
 
 app = dash.Dash(
     __name__,
     title = "Excel-Analysis",
-    external_stylesheets=[dbc.themes.COSMO],
+    external_stylesheets=[dbc.themes.MINTY],
     suppress_callback_exceptions=True,
     update_title='Job Running...',
     meta_tags=[
-        {"name": "viewport", "content": "width=device-width, initial-scale=0.8"}
+        {"name": "viewport", "content": "width=device-width, initial-scale=0.7"}
     ],
-    requests_pathname_prefix="/upload/",
+    requests_pathname_prefix="/profile/",
 )
 
 random_lottie = int(time.time())%15
@@ -193,16 +191,15 @@ def on_profile_result_set_graph(
         graphs_prev_displayed,
         profile_summary_result_store
 ):
-
     new_col = np.setdiff1d(col_selected, cols_prev_selected)
 
     if new_col.size > 0:
-        new_graph=CreateDynamicCard(profile_result_store, profile_summary_result_store, new_col.tolist()[0], aio_id=new_col.tolist()[0])
+        new_graph=CreateDynamicCardDwnld(profile_result_store, profile_summary_result_store, new_col.tolist()[0], aio_id=new_col.tolist()[0])
         graphs_prev_displayed.insert(0, new_graph)
         return graphs_prev_displayed, col_selected
     else:
         col_selected.reverse()
-        graphs = [CreateDynamicCard(profile_result_store, profile_summary_result_store, col, aio_id=col) for col in col_selected]
+        graphs = [CreateDynamicCardDwnld(profile_result_store, profile_summary_result_store, col, aio_id=col) for col in col_selected]
         return graphs, col_selected
 
 
@@ -210,7 +207,7 @@ def on_profile_result_set_graph(
     Output('jsScrollDDSelect', 'run'),
     inputs = dict(
         scroll_btn_click=Input(
-            component_id={'component': 'CreateDynamicCard', 'subcomponent': 'scrollTop', 'aio_id': ALL},
+            component_id={'component': 'CreateDynamicCardDwnld', 'subcomponent': 'scrollTopDwnld', 'aio_id': ALL},
             component_property='n_clicks')
     ),
          prevent_initial_call = True
@@ -234,7 +231,7 @@ def scroll_to_top(scroll_btn_click):
     inputs = dict(
         # close_btn = Input(component_id={'type': 'closeBtn', 'index': ALL}, component_property='n_clicks'),
         close_btn_click = Input(
-            component_id={'component': 'CreateDynamicCard', 'subcomponent': 'closeBtn','aio_id': ALL},
+            component_id={'component': 'CreateDynamicCardDwnld', 'subcomponent': 'closeBtnDwnld','aio_id': ALL},
             component_property='n_clicks'),
         dropdown_values = State('columnsDropdown', 'value'),
     ),

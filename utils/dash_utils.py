@@ -1,13 +1,11 @@
 import base64
-from datetime import datetime
 import io
 import pandas as pd
 from typing import List, Dict
 import databricks.koalas as ks
-from dash import dcc, html, dash_table
+from dash import dash_table
 import dash_bootstrap_components as dbc
-import plotly_express as px
-import plotly.graph_objs as gobjs
+
 
 from utils.spark_utils import cleanup_col_name
 
@@ -18,6 +16,15 @@ def row_col(list_of_components: List) -> dbc.Row:
             list_of_components
         )
     ])
+
+
+def get_graph_height(col_data_store: List[Dict]) -> int:
+    calc_height = len(col_data_store) * 50
+    if calc_height < 500:
+        return 500
+    elif calc_height > 2000:
+        return 2000
+    return calc_height
 
 
 def read_upload_into_pdf(list_of_contents, list_of_names, num_sample_records=None) -> pd.DataFrame:
@@ -127,15 +134,6 @@ def get_summary_stats_datatable(summary_stats_pdf: pd.DataFrame) -> dash_table.D
     return stats_data_table
 
 
-# def get_badge(col_summary_stat: Dict, metric: str) -> dbc.Button:
-#     return dbc.Button(
-#         [f"from function {metric}",
-#          dbc.Badge(f"{col_summary_stat['num_distinct_values']}",
-#                    color="dark", className="ml-1")],
-#         color="warning",
-#         className="m-1 btn-sm"
-#     )
-
 def get_numeric_badges(col_summary_stat: Dict) -> List[dbc.Button]:
 
     if col_summary_stat['column_type'] == 'numeric':
@@ -170,6 +168,12 @@ def get_numeric_badges(col_summary_stat: Dict) -> List[dbc.Button]:
 
 
 def get_std_badges(col_summary_stat: Dict) -> List[dbc.Button]:
+    num_nulls = (100 - col_summary_stat['completeness']*100)
+    if num_nulls==int(num_nulls):
+        print_num_nulls = f"{int(num_nulls)}"
+    else:
+        print_num_nulls = f"{num_nulls:.2f}"
+
     std_tiles = [dbc.Button(
         ["Unique value count",
          dbc.Badge(f"{col_summary_stat['num_distinct_values']}", color="danger", className="ml-1 text-light")],
@@ -177,7 +181,8 @@ def get_std_badges(col_summary_stat: Dict) -> List[dbc.Button]:
         className="m-1"
     ), dbc.Button(
         ["Nulls or blanks",
-         dbc.Badge(f"{1 - int(col_summary_stat['completeness'])}%", color="danger", className="ml-1 text-light")],
+         dbc.Badge(f"{print_num_nulls}%", color="danger",
+                   className="ml-1 text-light")],
         color="light",
         className="m-1"
     )]

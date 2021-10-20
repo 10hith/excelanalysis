@@ -1,15 +1,10 @@
 from dash import Dash, Output, Input, State, html, dcc, callback, MATCH
 import uuid
-from datetime import datetime
 import dash_bootstrap_components as dbc
 from dash import dcc, dash_table
 from typing import List, Dict
 import plotly_express as px
-import dash_extensions as de
-from dash_extensions.snippets import send_bytes
-import pandas as pd
-import plotly.graph_objects as go
-from utils.dash_utils import get_std_badges, get_numeric_badges
+from utils.dash_utils import get_std_badges, get_numeric_badges, get_graph_height
 
 
 class CreateDynamicCard(html.Div):
@@ -51,31 +46,25 @@ class CreateDynamicCard(html.Div):
             x="percentage",
             orientation='h',
             color="value",
-            # text='num_occurrences',
             labels={
-                "value": "Categories"
+                "value": "Click to select values"
             },
             hover_name='value_complete',
             hover_data=['percentage']
-            # hovertemplate="%{value_complete}"
         )
-
         fig.update_layout(
-            title={
-                'text': f"{aio_id}",
-                'y': 0.95,
-                'x': 0.4,
-                'xanchor': 'center',
-                'yanchor': 'top'
-            },
-            # autosize=False,
-            # title_font_color='secondary',
+            autosize=True,
+            height=get_graph_height(col_data_store),
+            legend_title=f"Click to select '{column_name.upper()}'",
+            legend=dict(
+                orientation="h",
+            ),
             xaxis_title="Percentage Of Records",
             yaxis_title="Categories Values",
-            legend_title="Categories",
             yaxis_automargin=True,
             yaxis_autorange=True,
         )
+
         #############################
         # Creating the summary tile
         #############################
@@ -204,16 +193,13 @@ class CreateDynamicCard(html.Div):
             hover_name='value_complete'
         )
         column_name = id['aio_id']
-
         fig_pie.update_layout(
-            title={
-                'text': f"{column_name}",
-                'y': 0.95,
-                'x': 0.4,
-                'xanchor': 'center',
-                'yanchor': 'top'
-            },
-            legend_title="Categories",
+            legend_title=f"Click to select '{column_name.upper()}'",
+            legend=dict(
+                orientation="h",
+            ),
+            autosize=True,
+            height=get_graph_height(col_data_store),
         )
 
         col_data_store_clean = col_data_store
@@ -230,7 +216,9 @@ class CreateDynamicCard(html.Div):
                 } for row in col_data_store_clean
             ],
             fixed_rows={'headers': True},
-            style_cell={'minWidth': 25, 'width': 95, 'maxWidth': 95},
+            filter_action="native",
+            sort_action="native",
+            style_cell={'minWidth': 50, 'width': 95, 'maxWidth': 95},
             style_table={'height': 300,},  # default is 500
             style_header={
                 'backgroundColor': '#7f7f7f',

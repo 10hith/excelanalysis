@@ -6,7 +6,8 @@ from utils.spark_utils import get_local_spark_session, get_spark_conf_as_json, s
 from utils.params import HOST
 
 from dash_apps.upload_component_withGraph import app as app_new_upload
-from dash_apps.full_width_upload import app as app_upload
+from dash_apps.profile_app import app as profile_app
+# from dash_apps.profile_wix_app import app as profile_wix_app
 from dash_apps.example1 import app as app_eg1
 
 
@@ -30,7 +31,8 @@ def read_main():
     return {"lohith says": f"DF is => ${spark_conf_json}"}
 
 
-app.mount("/upload", WSGIMiddleware(app_upload.server))
+app.mount("/profile", WSGIMiddleware(profile_app.server))
+# app.mount("/wix", WSGIMiddleware(profile_wix_app.server))
 app.mount("/new_upload/", WSGIMiddleware(app_new_upload.server))
 app.mount("/eg1", WSGIMiddleware(app_eg1.server))
 

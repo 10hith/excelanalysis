@@ -72,16 +72,7 @@ git filter-branch -f --index-filter "git rm -rf --cached --ignore-unmatch resour
 docker run -p 80:80 -e WORKERS_PER_CORE="0.5" eapp
 
 # ToDo
-<!--HTTPS only...-->
-<iframe width="100%" height="100%"
-        sandbox="allow-downloads allow-forms allow-scripts allow-same-origin"
-        src="https://excelanalysis.online/upload/"
-        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-</iframe>
-Tooltip and Conditional formatting for datatable - in progress
-datatable freeze panes within the columns
-Viewport for mobile devices - almost there, get the graphs width sorted
-Adding a close button on dbc.cards (https://community.plotly.com/t/updating-a-dropdown-menus-contents-dynamically/4920/3)
+
 
 
 # Reading json values returned from rest api call
