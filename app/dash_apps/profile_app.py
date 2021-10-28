@@ -17,7 +17,7 @@ import time
 app = dash.Dash(
     __name__,
     title = "Excel-Analysis",
-    external_stylesheets=[dbc.themes.MINTY],
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
     update_title='Job Running...',
     meta_tags=[
@@ -103,7 +103,8 @@ def start_profile(upload_content, upload_file_name):
     if upload_content is None:
         return html.Div([]), []
 
-    summary_stats_pdf, histogram_pdf = get_summary_and_histogram_dfs(pdf)
+    summary_stats_pdf, histogram_pdf, ds_size = get_summary_and_histogram_dfs(pdf)
+    num_cols = summary_stats_pdf.shape[0]
 
     # Capturing end time
     stop = timeit.default_timer()
@@ -116,17 +117,21 @@ def start_profile(upload_content, upload_file_name):
         dbc.Row([
             dbc.Col([
                 html.Br(),
-                html.H3(f"Analysis completed in {analysis_execution_time} seconds; \
-                Number of spark partitions is {SPARK_NUM_PARTITIONS}"),
+                html.H4(f"Analysis completed in {analysis_execution_time} seconds; \
+                Number of spark partitions is {SPARK_NUM_PARTITIONS}",
+                        className="text-info"),
                 ],
             ),
             ]),
         dbc.Row([
             dbc.Col([
                 html.Br(),
-                html.H3(f"Below is the summary stats for the dataframe", className="alert alert-primary"),
-                html.Br(),
-                html.Br(),
+                html.H4(children=[
+                    dcc.Markdown(f''' '{upload_file_name}' contains ***```{ds_size}```*** records and ***```{num_cols}```*** columns''',
+                                 className="text-info"),
+                ]),
+                html.H3(f"Below is the summary stats for the dataframe",
+                        className="text-info"),
                 get_summary_stats_datatable(summary_stats_pdf),
                 html.Br(),
             ],
@@ -135,7 +140,7 @@ def start_profile(upload_content, upload_file_name):
         row_col([html.Br()]),
         dbc.Row([
             dbc.Col([
-                html.H3(f"Select a column from the drop down to see the value distribution", className="alert alert-primary"),
+                html.H3(f"Select a column from the drop down to see the value distribution", className="text-primary"),
                 ],
             )
             ]),

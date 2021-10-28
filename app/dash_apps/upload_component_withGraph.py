@@ -117,7 +117,7 @@ def start_profile(upload_content, upload_file_name):
     if upload_content is None:
         return html.Div([]), []
 
-    summary_stats_pdf, histogram_pdf = get_summary_and_histogram_dfs(pdf)
+    summary_stats_pdf, histogram_pdf, ds_size = get_summary_and_histogram_dfs(pdf)
 
     # Capturing end time
     stop = timeit.default_timer()
@@ -139,6 +139,7 @@ def start_profile(upload_content, upload_file_name):
         dbc.Row([
             dbc.Col([
                 html.Br(),
+                dcc.Markdown(f"Your dataset contains *{ds_size}* records"),
                 html.H3(f"Below is the summary stats for the dataframe", className="alert alert-primary"),
                 html.Br(),
                 dbc.Button(

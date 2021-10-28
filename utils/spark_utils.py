@@ -85,8 +85,11 @@ def get_summary_and_histogram_dfs(pdf: pd.DataFrame) -> (pd.DataFrame, pd.DataFr
 
     summary_stats_pdf: pd.DataFrame = summary_stats_sdf.toPandas()
     histogram_pdf: pd.DataFrame = histogram_sdf.toPandas()
+    # Get the size of the dataframe
+    size = summary_stats_pdf['size'].iloc[0]
+    summary_stats_pdf.drop('size', axis=1, inplace=True)
 
-    return summary_stats_pdf, histogram_pdf
+    return summary_stats_pdf, histogram_pdf, size
 
 
 def transform(self, f):
