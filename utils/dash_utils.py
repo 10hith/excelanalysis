@@ -5,7 +5,7 @@ from typing import List, Dict
 import databricks.koalas as ks
 from dash import dash_table
 import dash_bootstrap_components as dbc
-
+import plotly_express as px
 
 from utils.spark_utils import cleanup_col_name
 
@@ -129,36 +129,36 @@ def get_summary_stats_datatable(summary_stats_pdf: pd.DataFrame) -> dash_table.D
          }
         ],
         style_cell={'minWidth': 95, 'width': 95, 'maxWidth': 95},
-        style_table={'height': 500},  # default is 500,
+        style_table={'height': '300px', 'overflowY': 'auto'},  # default is 500,
         )
     return stats_data_table
 
 
 def get_numeric_badges(col_summary_stat: Dict) -> List[dbc.Button]:
-
+    standard_badge_styling = "ml-1 text-light"
     if col_summary_stat['column_type'] == 'numeric':
         return [
             dbc.Button(
-                ["Max",
-                 dbc.Badge(f"{col_summary_stat['maximum']:.2f}", color="danger", className="ml-1 text-light")],
+                ["Max ",
+                 dbc.Badge(f"{col_summary_stat['maximum']:.2f}", color="danger", className=standard_badge_styling)],
                 color="light",
                 className="m-1"
             ),
             dbc.Button(
-                ["Min",
-                 dbc.Badge(f"{col_summary_stat['minimum']:.2f}", color="danger", className="ml-1 text-light")],
+                ["Min ",
+                 dbc.Badge(f"{col_summary_stat['minimum']:.2f}", color="danger", className=standard_badge_styling)],
                 color="light",
                 className="m-1"
             ),
             dbc.Button(
-                ["Mean",
-                 dbc.Badge(f"{col_summary_stat['mean']:.2f}", color="danger", className="ml-1 text-light")],
+                ["Mean ",
+                 dbc.Badge(f"{col_summary_stat['mean']:.2f}", color="danger", className=standard_badge_styling)],
                 color="light",
                 className="m-1"
             ),
             dbc.Button(
-                ["stdDev",
-                 dbc.Badge(f"{col_summary_stat['stdDev']:.2f}", color="danger", className="ml-1 text-light")],
+                ["stdDev ",
+                 dbc.Badge(f"{col_summary_stat['standard_deviation']:.2f}", color="danger", className=standard_badge_styling)],
                 color="light",
                 className="m-1"
             ),
@@ -175,15 +175,27 @@ def get_std_badges(col_summary_stat: Dict) -> List[dbc.Button]:
         print_num_nulls = f"{num_nulls:.2f}"
 
     std_tiles = [dbc.Button(
-        ["Unique value count",
+        ["Unique value count ",
          dbc.Badge(f"{col_summary_stat['num_distinct_values']}", color="danger", className="ml-1 text-light")],
         color="light",
         className="m-1"
     ), dbc.Button(
-        ["Nulls or blanks",
+        ["Nulls or blanks ",
          dbc.Badge(f"{print_num_nulls}%", color="danger",
-                   className="ml-1 text-light")],
+                   )],
         color="light",
         className="m-1"
     )]
     return std_tiles
+
+
+def get_crime_summary_graph(pdf):
+    fig = px.histogram(
+    pdf,
+    x='crime_type',
+    color="crime_type",
+    text_auto='1s'
+    )
+    fig.update_layout(xaxis={'categoryorder':'total descending'}, uniformtext_minsize=8)
+    fig.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
+    return fig

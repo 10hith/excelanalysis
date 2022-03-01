@@ -3,22 +3,21 @@ import uvicorn as uvicorn
 from utils.params import HOST
 
 from fastapi.middleware.wsgi import WSGIMiddleware
-from utils.spark_utils import get_local_spark_session, \
-    get_spark_conf_as_json, \
-    get_spatial_spark_session, \
-    spark
+from utils.spark_utils import get_local_spark_session, get_spark_conf_as_json, spark, get_cluster_spark_session
 
-# from dash_apps.example1 import app as app_eg1
+from dash_apps.example1 import app as app_eg1
 from dash_apps.multipage_app import app as multi_app
-# from routers.mapp import mappRouter
+from routers.mapp import mappRouter
 
 app = FastAPI()
 
 
-# @app.on_event("startup")
-# async def startup_event():
-#     # spark = get_local_spark_session(app_name="fastApi Startup")
-#     spark = get_spatial_spark_session()
+
+@app.on_event("startup")
+async def startup_event():
+    # spark = get_local_spark_session(app_name="fastApi Startup")
+    spark = get_cluster_spark_session()
+    return spark
 
 
 @app.on_event("shutdown")
@@ -35,10 +34,11 @@ def read_main():
 # app.mount("/", WSGIMiddleware(multi_app.server))
 
 
-# app.include_router(mappRouter, prefix="/mapp")
+app.include_router(mappRouter, prefix="/mapp")
 
- # app.mount("/eg1", WSGIMiddleware(app_eg1.server))
-app.mount("/", WSGIMiddleware(multi_app.server))
+
+app.mount("/eg1", WSGIMiddleware(app_eg1.server))
+app.mount("/mapp", WSGIMiddleware(multi_app.server))
 
 
 # @app.get("/")

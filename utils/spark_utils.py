@@ -4,6 +4,9 @@ from databricks import koalas as ks
 from pyspark.sql import functions as f
 from utils.deutils import run_profile
 
+from sedona.register import SedonaRegistrator
+from sedona.utils import SedonaKryoRegistrator, KryoSerializer
+
 import json
 from pathlib import Path
 from pyspark.sql import DataFrame
@@ -18,8 +21,13 @@ def get_project_root() -> Path:
 PROJECT_ROOT = get_project_root()
 SPARK_NUM_PARTITIONS = 8
 
-DEUTILS_PATH = str(PROJECT_ROOT) + "/resources/DqProfiler-1.0-SNAPSHOT-jar-with-dependencies.jar"
-
+DATA_PATH = str(PROJECT_ROOT) + '/resources/data'
+DEUTILS_PATH = str(PROJECT_ROOT) + '/resources/DqProfiler-1.0-SNAPSHOT-jar-with-dependencies.jar'
+POSTGRES_JDBC = str(PROJECT_ROOT) + '/resources/postgresql-42.3.3.jar'
+GEOTOOLS_JAR = str(PROJECT_ROOT) + '/resources/geotools-wrapper-1.1.0-25.2.jar'
+SEDONA_JAR = str(PROJECT_ROOT) + '/resources/sedona-python-adapter-3.0_2.12-1.1.1-incubating.jar'
+AWS_JAVA = str(PROJECT_ROOT) + '/resources/aws-java-sdk-bundle-1.12.167.jar'
+HADOOP_AWS = str(PROJECT_ROOT) + '/resources/hadoop-aws-3.2.0.jar'
 
 os.environ["PYARROW_IGNORE_TIMEZONE"] = "1"
 
@@ -41,15 +49,81 @@ def get_local_spark_session(app_name: str = "SparkTest"):
         .builder \
         .appName(f"{app_name}") \
         .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
-        .config('spark.jars', f'{DEUTILS_PATH}') \
+        .config('spark.jars', f"{DEUTILS_PATH},{POSTGRES_JDBC}") \
+        .config("driver-class-path", f"{POSTGRES_JDBC}")\
         .config('spark.sql.session.timeZone', 'UTC') \
         .config('spark.sql.execution.arrow.pyspark.enabled', True) \
-        .config('spark.debug.maxToStringFields', 100) \
+        .config('spark.debug.maxToStringFields', 0) \
         .getOrCreate()
     return spark
 
 
-spark = get_local_spark_session(app_name="Upload Application")
+# def get_cluster_spark_session(app_name: str = "SparkCluster"):
+#     """
+#     Creates a local spark session.
+#             # .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
+#             spark.debug.maxToStringFields=100
+#             spark.conf.set("spark.sql.debug.maxToStringFields", 100)
+#         .config('spark.sql.execution.arrow.pyspark.enabled', True) \
+#         .config('spark.sql.session.timeZone', 'UTC') \
+#         .config('spark.driver.memory','32G') \
+#     Need to add more configuration
+#     :param app_name:
+#     :return:
+#     """
+#     spark = SparkSession \
+#         .builder \
+#         .master("spark://spark-master:7077") \
+#         .config("spark.executor.memory", "512m") \
+#         .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
+#         .config('spark.jars', f"{DEUTILS_PATH},{POSTGRES_JDBC}") \
+#         .config("driver-class-path", f"{POSTGRES_JDBC}")\
+#         .config('spark.sql.session.timeZone', 'UTC') \
+#         .config('spark.sql.execution.arrow.pyspark.enabled', True) \
+#         .config('spark.debug.maxToStringFields', 0) \
+#         .getOrCreate()
+#     return spark
+
+
+def get_spatial_spark_session(app_name: str = "SparkTest"):
+    """
+    Creates a local spark session.
+            # .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
+            spark.debug.maxToStringFields=100
+            spark.conf.set("spark.sql.debug.maxToStringFields", 100)
+        .config('spark.sql.execution.arrow.pyspark.enabled', True) \
+        .config('spark.sql.session.timeZone', 'UTC') \
+        .config('spark.driver.memory','32G') \
+    Need to add more configuration
+    :param app_name:
+    :return:
+    """
+    spark = SparkSession \
+        .builder \
+        .appName(f"{app_name}") \
+        .config("spark.sql.shuffle.partitions", f"{SPARK_NUM_PARTITIONS}") \
+        .config('spark.jars',
+                f"{DEUTILS_PATH},"
+                f"{POSTGRES_JDBC},"
+                f"{SEDONA_JAR},"
+                f"{GEOTOOLS_JAR},"
+                f"{HADOOP_AWS},"
+                f"{AWS_JAVA}"
+                ) \
+        .config("spark.serializer", KryoSerializer.getName) \
+        .config("spark.kryo.registrator", SedonaKryoRegistrator.getName) \
+        .config("driver-class-path", f"{POSTGRES_JDBC}")\
+        .config('spark.sql.session.timeZone', 'UTC') \
+        .config('spark.sql.execution.arrow.pyspark.enabled', True) \
+        .config('spark.debug.maxToStringFields', 0) \
+        .getOrCreate()
+
+    SedonaRegistrator.registerAll(spark)
+
+    return spark
+
+
+spark = get_spatial_spark_session(app_name="GeoSpatial Application")
 
 
 def get_spark_conf_as_json(spark: SparkSession) -> json:
@@ -62,7 +136,7 @@ def get_spark_conf_as_json(spark: SparkSession) -> json:
     return json.dumps(dict(configurations))
 
 
-def get_summary_and_histogram_dfs(pdf: pd.DataFrame) -> (pd.DataFrame, pd.DataFrame):
+def get_summary_and_histogram_dfs(pdf: pd.DataFrame, spark) -> (pd.DataFrame, pd.DataFrame):
     kdf = ks.from_pandas(pdf)
     sdf = kdf.to_spark()
     profiled_sdf = run_profile(spark, sdf)
@@ -89,7 +163,9 @@ def get_summary_and_histogram_dfs(pdf: pd.DataFrame) -> (pd.DataFrame, pd.DataFr
     size = summary_stats_pdf['size'].iloc[0]
     summary_stats_pdf.drop('size', axis=1, inplace=True)
 
-    return summary_stats_pdf, histogram_pdf, size
+    num_cat_cols = summary_stats_pdf['distribution_available'].sum().astype(int)
+
+    return summary_stats_pdf, histogram_pdf, size, num_cat_cols
 
 
 def transform(self, f):
@@ -136,5 +212,29 @@ def with_std_column_names():
     return inner
 
 
+def get_crime(lkp_lat, lkp_log, spark):
+    df = spark.sql(f"""
+    SELECT 
+    crime_type,
+    CAST(CONCAT(mnth,'-01') AS DATE) AS mnth,
+    lat,
+    log as lon,
+    CONCAT(lat,',',log) AS point,
+    ST_Distance(
+        crime_geo,
+        ST_Transform(ST_Point({lkp_lat},{lkp_log}),'epsg:4326', 'epsg:3857')
+        )/1609 AS distance_in_km
+    FROM 
+    crime
+    WHERE ST_Distance(
+        crime_geo,
+        ST_Transform(ST_Point({lkp_lat},{lkp_log}),'epsg:4326', 'epsg:3857')
+        )/1609 < .321
+    """)
+
+    df = df.withColumn("tooltip",f.expr(
+        """CONCAT(crime_type, '-', ROUND(distance_in_km,2), ' km away') """)
+                       )
+    return df
 
 

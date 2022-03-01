@@ -46,9 +46,9 @@ class CreateDynamicCard(html.Div):
             x="percentage",
             orientation='h',
             color="value",
-            labels={
-                "value": "Click to select values"
-            },
+            # labels={
+            #     "value": "Click to select values"
+            # },
             hover_name='value_complete',
             hover_data=['percentage']
         )
@@ -83,21 +83,22 @@ class CreateDynamicCard(html.Div):
                         html.H4(f"    '{column_name.upper()}'", className="text-primary float-left"),
                     ]
                     ),
-                    dbc.Col([
-                        dbc.Button(
-                            id=self.ids.closeBtn(aio_id), children="X", n_clicks=0,
-                            className="m-0 border border-dark btn-close btn btn-danger float-right btn-sm"),
-                        dbc.Button(
-                            id=self.ids.scrollTop(aio_id), children="^", n_clicks=0,
-                            className="m-0 border border-dark btn-close btn btn-success float-right btn-sm"),
-                        dbc.Button(
-                            "View/Hide Summary",
-                            id=self.ids.showSummaryTile(aio_id),
-                            className="m-0 border border-dark btn-close btn btn-info float-right btn-sm", n_clicks=0),
-                    ], width={"order": 2}
-                    ),
+                    dbc.Col(
+                        dbc.ButtonGroup([
+                            dbc.Button(
+                                "View/Hide Summary",
+                                id=self.ids.showSummaryTile(aio_id),
+                                className="m-0 btn-info btn-sm", n_clicks=0),
+                            dbc.Button(
+                                id=self.ids.scrollTop(aio_id), children="^", n_clicks=0,
+                                className="m-0 bg-success btn-sm"),
+                            dbc.Button(
+                                id=self.ids.closeBtn(aio_id), children="X", n_clicks=0,
+                                className="m-0 bg-danger text-light btn-sm"),
+                        ], className="float-end")
+                        , width={"order": 5}
+                    )
                 ],
-                    # justify="end"
                 ),
                 dbc.Collapse([
                     dbc.Row([
@@ -120,6 +121,9 @@ class CreateDynamicCard(html.Div):
                                         tab_id="tabBarChart",
                                         children=[
                                             dbc.Row([
+                                                html.Br(),
+                                            ]),
+                                            dbc.Row([
                                                 dbc.Col([
                                                     dcc.Graph(id=self.ids.dynBarChart(aio_id),
                                                               figure=fig,
@@ -136,6 +140,9 @@ class CreateDynamicCard(html.Div):
                                         label="View Pie Chart",
                                         tab_id="tabPieChart",
                                         children=[
+                                            dbc.Row([
+                                                html.Br(),
+                                            ]),
                                             dbc.Row([
                                                 dbc.Col([
                                                     dcc.Graph(id=self.ids.dynPieChart(aio_id),
@@ -154,6 +161,9 @@ class CreateDynamicCard(html.Div):
                                         tab_id="tabData",
                                         children=[
                                             dbc.Row([
+                                                html.Br(),
+                                            ]),
+                                            dbc.Row([
                                                 dbc.Col([html.Div(id=self.ids.dataTablePh(aio_id), children=[])
                                                          ],
                                                         )
@@ -171,7 +181,7 @@ class CreateDynamicCard(html.Div):
                         dcc.Store(id=self.ids.dynStore(aio_id), data=col_data_store),
                     ]
                 )],
-            ),
+            className="shadow p-3 mb-3 bg-white rounded"),
             ])
 
     # Define CallBacks

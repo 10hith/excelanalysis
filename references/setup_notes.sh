@@ -5,20 +5,22 @@ alias intellij="nohup /opt/idea-IC-211.7628.21/bin/idea.sh </dev/null &>/dev/nul
 export DISPLAY=192.168.1.150:0.0
 export SPARK_HOME=/opt/spark-3.0.3-bin-hadoop2.7
 
-python3.8 -m venv .env3.8
+dash_leaflet
+pip install jsbeautifier
 
+# git ssh push
+
+ssh-keygen -t ed25519 -C "lohith.uvce@gmail.com"
+chmod 400 ~/.ssh/id_rsa
+ssh-add id_rsa
+If still asks for pwd, update .git/config to ssh url and not https
+
+python3.8 -m venv dash2
+source envs/dash2/activate
 pip install -r /path/to/requirements.txt
 
-
-pip install -U dash-labs
-pip install -U dash-bootstrap-components spectra colormath requests tinycss2
-pip install diskcache
-# PYSPARK_HADOOP_VERSION=2.7 pip install pyspark -v
-pip install koalas
-pip install pyspark
-pip install openpyxl # To read xlsx file in the dash upload component
-pip install jupyterlab
-pip install findspark
+'''leaflet - Adding custom marker'''
+https://github.com/thedirtyfew/dash-leaflet/issues/26
 
 export SPARK_HOME=/opt/spark-3.0.3-bin-hadoop2.7
 
@@ -31,7 +33,7 @@ https://sparkbyexamples.com/spark/spark-setup-run-with-scala-intellij/
 Restart-Service LxssManager
 
 '''Bootstrap cheatsheet'''
-https://hackerthemes.com/bootstrap-cheatsheet/
+https://dashcheatsheet.pythonanywhere.com/
 
 # Configuring Git for large files
  sudo apt-get install git-lfs
@@ -51,6 +53,13 @@ And then use No cache?? lets see if this works;
 Restarting the machine - worked
 alias runeapp="docker run -p 80:80 -p 4040:4040 eapp3"
 alias buildeapp="cd /home/basal/excelanalysis && docker build -t eapp3 ."
+
+'''
+On Digital Ocean -
+docker-compose -f docker-compose.yml up -d
+Incase of certificate expiration, create a key on DO (Applications and API)
+Copy the key to "DO_AUTH_TOKEN" in docker-compose.yml. Remove the acme.json within letsexcrypt folder
+'''
 
 
 {"auths":{"docker.io":{"auth":"asjkldflasjdfSomeThing","email":"lohith.uvce@gmail.com"}},"credsStore":"desktop","currentContext":"default"}

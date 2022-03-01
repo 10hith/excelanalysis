@@ -95,25 +95,25 @@ class CreateDynamicCardDwnld(html.Div):
             dbc.Card([
                 dbc.Row([
                     dbc.Col([
-                        html.H4(f"    '{column_name.upper()}'", className="text-primary float-left"),
-                    ]
+                            html.H4(f"    '{column_name.upper()}'", className="text-primary float-left"),
+                        ], width={"order": "first"}
                     ),
-                    dbc.Col([
-                        dbc.Button(
-                            id=self.ids.closeBtnDwnld(aio_id), children="X", n_clicks=0,
-                            className="m-0 border border-dark btn-close btn btn-danger float-right btn-sm"),
-                        dbc.Button(
-                            id=self.ids.scrollTopDwnld(aio_id), children="^", n_clicks=0,
-                            className="m-0 border border-dark btn-close btn btn-success float-right btn-sm"),
-                        dbc.Button(
-                            "View/Hide Summary",
-                            id=self.ids.showSummaryTileDwnld(aio_id),
-                            className="m-0 border border-dark btn-close btn btn-info float-right btn-sm", n_clicks=0),
-                    ], width={"order": 2}
-                    ),
-                ],
-                    # justify="end"
-                ),
+                    dbc.Col(
+                        dbc.ButtonGroup([
+                            dbc.Button(
+                                "View/Hide Summary",
+                                id=self.ids.showSummaryTileDwnld(aio_id),
+                                className="m-0 btn-info btn-sm", n_clicks=0),
+                            dbc.Button(
+                                id=self.ids.scrollTopDwnld(aio_id), children="^", n_clicks=0,
+                                className="m-0 bg-success btn-sm"),
+                            dbc.Button(
+                                id=self.ids.closeBtnDwnld(aio_id), children="X", n_clicks=0,
+                                className="m-0 bg-danger text-light btn-sm"),
+                        ], className="float-end")
+                        , width={"order": 5}
+                    )
+                ]),
                 dbc.Collapse([
                     dbc.Row([
                         dbc.Col(std_badges, width={"order": 1, "offset": 1}),

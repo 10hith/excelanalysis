@@ -1,37 +1,45 @@
 import dash
-from dash import dcc, html, Input, Output, State, MATCH, dash_table, ALL, ALLSMALLER
+dash.register_page(__name__,
+                   path='/'
+                   )
+
+from dash import Dash, dcc, html, Input, Output, State, MATCH, dash_table, ALL, ALLSMALLER, callback
 import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
+import dash_labs as dl
 import timeit
 import numpy as np
 import ast
 
 from utils.dash_utils import read_upload_into_pdf, row_col, get_summary_stats_datatable
-from utils.spark_utils import SPARK_NUM_PARTITIONS, get_summary_and_histogram_dfs
+from utils.spark_utils import spark, SPARK_NUM_PARTITIONS, get_summary_and_histogram_dfs
 from utils.aio_components import CreateDynamicCard
 from utils.params import HOST
 import visdcc
 import dash_extensions as de
 import time
 
-app = dash.Dash(
-    __name__,
-    title = "Excel-Analysis",
-    external_stylesheets=[dbc.themes.COSMO],
-    suppress_callback_exceptions=True,
-    update_title='Job Running...',
-    meta_tags=[
-        {"name": "viewport", "content": "width=device-width, initial-scale=0.7"}
-    ],
-    requests_pathname_prefix="/wix/",
-)
+# app = dash.Dash(
+#     __name__,
+#     title = "Excel-Analysis",
+#     plugins=[dl.plugins.pages],
+#     external_stylesheets=[dbc.themes.BOOTSTRAP],
+#     suppress_callback_exceptions=True,
+#     update_title='Job Running...',
+#     meta_tags=[
+#         {"name": "viewport", "content": "width=device-width, initial-scale=0.7"}
+#     ],
+#     # requests_pathname_prefix="/profile/",
+# )
 
-random_lottie = int(time.time())%15
-url = app.get_asset_url(f"{random_lottie}_lottie.json")
-options = dict(loop=True, autoplay=True, rendererSettings=dict(preserveAspectRatio='xMidYMid slice'))
+# profiler_page = [page for page in dash.page_registry.values() if page["module"]=='pages.profiler'][0]
+
+# random_lottie = int(time.time())%15
+# url = app.get_asset_url(path=f"{random_lottie}_lottie.json")
+# options = dict(loop=True, autoplay=True, rendererSettings=dict(preserveAspectRatio='xMidYMid slice'))
 
 
-app.layout = dbc.Container([
+layout = dbc.Container([
     dbc.Row([
         html.Br()
     ]),
@@ -48,30 +56,44 @@ app.layout = dbc.Container([
             )
         ], className='mh-100 border border-primary text-center mb-2 text-primary'
         , width={'size':12}, md={'size': 8, "offset": 2}
-        )
-    ], no_gutters=True),
+        ),
+    dbc.Row([
+        dbc.Col([
+            dcc.Markdown(''' *Please note the __max__ file size is* **10MB** '''),
+        ], className="text-center"),
+    ]),
+    ],
+        # no_gutters=True
+    ),
     html.Br(),
-    html.Div(id="lottie_div_parent",
-        children =[ html.Div(
-                id='lottie_div', children=[
-                    de.Lottie(id="lottie", title="loading dataset", options=options, width="30%", height="30%", url=url,
-                              speed=1)],
-                style={'display': 'none'},
-            ),]
-             , style={'display': 'block'}),
+    # html.Div(id="lottie_div_parent",
+    #     children =[ html.Div(
+    #             id='lottie_div', children=[
+    #                 de.Lottie(id="lottie", title="loading dataset", options=options, width="30%", height="30%", url=url,
+    #                           speed=1)],
+    #             style={'display': 'none'},
+    #         ),]
+    #          , style={'display': 'block'}),
     html.Br(),
-    dcc.Store(id='profileResultStore', data=[]),
-    dcc.Store(id='profileSummaryResultStore', data=[]),
+    # dcc.Store(id='profileResultStore', data=[]),
+    # dcc.Store(id='profileSummaryResultStore', data=[]),
     dcc.Loading(
         id="loadingId",
         children=[html.Div(id='dummyDivForLoadingState', children=[])],
     ),
-    dbc.Container(id='displayProfileAnalysisActions', children=[], fluid=True),
-    html.Div(id='dummyDivPreDef', children=[]),
+    html.Div(id='lottie_div_parent', children=[]),
+    dbc.Container(
+        id='displayProfileAnalysisActions',
+        # children=[],
+        # fluid=True
+    ),
+    # html.Div(id='dummyDivPreDef', children=[]),
     dbc.Row([
         dbc.Col(html.Br())
     ]),
-], fluid=True)
+
+],
+)
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -79,7 +101,7 @@ Run Profiling
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
-@app.callback([Output('displayProfileAnalysisActions', 'children'),
+@callback([Output('displayProfileAnalysisActions', 'children'),
                Output('dummyDivForLoadingState', 'children'),
                Output('lottie_div_parent', 'style')],
                 inputs = dict(
@@ -103,11 +125,14 @@ def start_profile(upload_content, upload_file_name):
     if upload_content is None:
         return html.Div([]), []
 
-    summary_stats_pdf, histogram_pdf = get_summary_and_histogram_dfs(pdf)
+    summary_stats_pdf, histogram_pdf, ds_size, num_cat_cols = get_summary_and_histogram_dfs(pdf,spark)
+    num_cols = summary_stats_pdf.shape[0]
+    num_cont_cols = num_cols - num_cat_cols
 
     # Capturing end time
     stop = timeit.default_timer()
     analysis_execution_time = stop - start
+    ext_link = 'https://pandas.pydata.org/pandas-docs/stable/user_guide/categorical.html'
 
     profile_analysis_container = [
         dcc.Store(id='profileResultStore', data=histogram_pdf.to_dict('records')),
@@ -116,56 +141,86 @@ def start_profile(upload_content, upload_file_name):
         dbc.Row([
             dbc.Col([
                 html.Br(),
-                html.H3(f"Analysis completed in {analysis_execution_time} seconds; \
-                Number of spark partitions is {SPARK_NUM_PARTITIONS}"),
+                html.H4(f"Analysis completed in {analysis_execution_time} seconds; \
+                Number of spark partitions is {SPARK_NUM_PARTITIONS}",
+                        className="text-info"),
                 ],
             ),
             ]),
         dbc.Row([
             dbc.Col([
                 html.Br(),
-                html.H3(f"Below is the summary stats for the dataframe", className="alert alert-primary"),
-                html.Br(),
-                html.Br(),
+                html.H4(children=[
+                    # html.A("Link to external site", href='https://plot.ly', target="_blank")
+                    dcc.Markdown(
+                        f''' '{upload_file_name}' contains 
+                        ***```{ds_size}```*** records and 
+                        ***```{num_cols}```*** columns(
+                        .''',
+                                 className="text-info"),
+
+                ]),
+                ]),
+            ]),
+        dbc.Row([
+            dbc.Col([
+                dcc.Markdown(f''' `{num_cat_cols}` '''),
+                html.A('Categorical', href='{ext_link}', target="_blank")
+                ], width={'order': '1'}
+            ),
+            dbc.Col(
+                # dcc.Markdown(f''' `{num_cat_cols}` '''), width={'order': '1'}
+            )
+        ]),
+        dbc.Row([
+            dbc.Col([
+                html.H3(f"Below is the summary stats for the dataframe",
+                        className="text-info"),
                 get_summary_stats_datatable(summary_stats_pdf),
                 html.Br(),
-            ],
-            ),
+            ])
         ]),
         row_col([html.Br()]),
         dbc.Row([
             dbc.Col([
-                html.H3(f"Select a column from the drop down to see the value distribution", className="alert alert-primary"),
+                html.H3(f"Select a column from the drop down to see the value distribution", className="text-primary"),
                 ],
             )
             ]),
         dbc.Row([
             dbc.Col([
-                dcc.Dropdown(id='columnsDropdown', options=[
+                dcc.Dropdown(
+                    id='columnsDropdown', options=[
                     {'value': x, 'label': x} for x in set(histogram_pdf['column_name'])
-                ], multi=True, value=[], disabled=False, className="border border-3 border-primary"),
+                    ],
+                    multi=True, value=[], disabled=False, placeholder="Select a column to see the distribution",
+                    className="border border-3 border-primary"),
                 html.Br(),
                 ],
             ),
-            ], no_gutters=True),
+            ],
+            # no_gutters=True
+        ),
         dbc.Row([
             dbc.Col([
                 html.Div(id="myGraphCollections", children=[]),
                 ],
             )
-            ], no_gutters=True)
+            ],
+            # no_gutters=True
+        )
         ]
     return profile_analysis_container, [], {'display': 'none'}
 
-
-@app.callback(Output('lottie_div', 'style'),
-              inputs = dict(
-                upload_content = Input('uploadData', 'filename'),
-              ),
-              prevent_initial_call=True
-              )
-def run_lottie_animation(upload_content):
-    return {'display': 'block'}
+#
+# @callback(Output('lottie_div', 'style'),
+#               inputs = dict(
+#                 upload_content = Input('uploadData', 'filename'),
+#               ),
+#               prevent_initial_call=True
+#               )
+# def run_lottie_animation(upload_content):
+#     return {'display': 'block'}
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -173,7 +228,7 @@ Create callbacks for the profiling
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
-@app.callback(Output('myGraphCollections', 'children'),
+@callback(Output('myGraphCollections', 'children'),
               Output('colsPrevSelectedStore', 'data'),
               inputs=dict(
                   profile_result_store = Input('profileResultStore', 'data'),
@@ -203,7 +258,7 @@ def on_profile_result_set_graph(
         return graphs, col_selected
 
 
-@app.callback(
+@callback(
     Output('jsScrollDDSelect', 'run'),
     inputs = dict(
         scroll_btn_click=Input(
@@ -226,7 +281,7 @@ def scroll_to_top(scroll_btn_click):
 # '''
 # Close button using click context
 # '''
-@app.callback(
+@callback(
     Output('columnsDropdown', 'value'),
     inputs = dict(
         # close_btn = Input(component_id={'type': 'closeBtn', 'index': ALL}, component_property='n_clicks'),
@@ -254,5 +309,5 @@ def update_dropdown(close_btn_click, dropdown_values):
     return dropdown_values
 
 
-if __name__ == '__main__':
-    app.run_server(debug=True, port=8003, host=HOST)
+# if __name__ == '__main__':
+#     app.run_server(debug=True, port=8003, host=HOST)

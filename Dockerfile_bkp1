@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM python:3.8
 
 WORKDIR /app
 
@@ -35,3 +35,6 @@ COPY . .
 ENV PYTHONPATH "${PYTHONPATH}:/tmp/app"
 
 ENV PYTHONPATH "${PYTHONPATH}:/excelanalysis"
+
+CMD ["uvicorn", "main_bkp:app1", "--proxy-headers", "--host", "0.0.0.0", "--port", "81", "&&", "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port" , "82"]
+
